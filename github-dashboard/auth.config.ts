@@ -32,6 +32,6 @@ export const authConfig = {
                 return Response.redirect(new URL('/dashboard', nextUrl));
             }
             return true;
-        },
+        }
     },
 } satisfies NextAuthConfig;
