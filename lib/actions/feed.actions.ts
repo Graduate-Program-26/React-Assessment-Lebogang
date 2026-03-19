@@ -1,7 +1,7 @@
 
 
 import { auth } from '@/lib/auth'
-
+import { FeedEvent , EventType} from '@/utils/types/feed'
 
 export async function fetchAuthenticatedUserFeed(per_page?: number) {
       const session = await auth();
@@ -19,9 +19,14 @@ export async function fetchAuthenticatedUserFeed(per_page?: number) {
             console.error(error)
         }
 }
-export async function fetchUserPublicFeed(username: string, per_page?: number) {
-        
 
+const SUPPORTED_EVENTS: EventType[] = ["PushEvent", "PullRequestEvent", "WatchEvent", "ForkEvent"]
+
+export async function fetchUserPublicFeed(username: string, per_page = 20) {
+    const res = await fetch(`https://api.github.com/users/${username}/events/public/?per_page=${per_page}`)
+    const data = await res.json()
+
+    return data.filter((event: any) => SUPPORTED_EVENTS.includes(event.type)) as FeedEvent[]
 }
 
 export async function fetchGlobalFeed() {
