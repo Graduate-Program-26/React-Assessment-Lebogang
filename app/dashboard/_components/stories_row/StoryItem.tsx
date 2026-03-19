@@ -1,5 +1,5 @@
 import clsx from "clsx";
-interface StoryItem {
+export interface StoryItemProp {
     avatar_url: string;
     username: string;
     html_url: string;
@@ -10,7 +10,7 @@ interface StoryItem {
 }
 
 
-export default function StoryItem({ data }: { data: StoryItem }) {
+export default function StoryItem({ data }: { data: StoryItemProp }) {
     const ringClass = {
         self: "bg-gradient-to-tr from-blue-400 to-green-400",
         active: "bg-gradient-to-tr from-blue-500 via-purple-500 to-yellow-400",
@@ -25,7 +25,7 @@ export default function StoryItem({ data }: { data: StoryItem }) {
 
     // variant used to map the gradient colors to the story item based on the user status, done in this manner for cleaner code using clsx conditionals 
     return (
-        <div className="flex flex-col items-center space-y-2">
+        <a className="flex flex-col items-center space-y-2">
             <div className={clsx("p-[2.5px] rounded-full", variant)} >
                 <div className="bg-background p-2 rounded-full">
                     <img
@@ -38,6 +38,6 @@ export default function StoryItem({ data }: { data: StoryItem }) {
             <p className="text-xs text-muted-foreground truncate max-w-16 text-center">
                 {data.username}
             </p>
-        </div>
+        </a>
     )
 }
