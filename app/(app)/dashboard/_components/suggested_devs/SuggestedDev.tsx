@@ -40,7 +40,7 @@ export default function SuggestedDev({ data }: { data: SuggestedDevProp }) {
       </ItemContent>
 
       <ItemActions>
-        <Button variant="outline" size="sm" onClick={handleViewProfile}>
+        <Button variant="outline" size="sm">
           View Profile
         </Button>
       </ItemActions>

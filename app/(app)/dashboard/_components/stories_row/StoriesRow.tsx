@@ -6,8 +6,10 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel"
 
+
+import { mockStories } from "@/lib/mock/data";
 export default function StoriesRow() {
-    const stories: StoryItemProp[] = []
+    const stories: StoryItemProp[] = mockStories;
     // fetch list of stories
     return (
         <Carousel opts={{ dragFree: true, align: "start" }} className="w-full">

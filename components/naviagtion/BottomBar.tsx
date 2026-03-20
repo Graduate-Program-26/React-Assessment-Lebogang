@@ -1,4 +1,4 @@
-"use client"
+"use client" // needed for usePathname and Link
 
 import { usePathname } from "next/navigation"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"

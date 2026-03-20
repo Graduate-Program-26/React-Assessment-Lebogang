@@ -6,8 +6,10 @@ import {
 
 
 import { SuggestedDevProp } from "./SuggestedDev";
+
+import { mockSuggestions } from "@/lib/mock/data";
 export default function SuggestedDevs() {
-    const suggestions: SuggestedDevProp[] = [];
+    const suggestions: SuggestedDevProp[] = mockSuggestions
     return (
         <div className="space-y-4">
             <div>Suggested Devs</div>

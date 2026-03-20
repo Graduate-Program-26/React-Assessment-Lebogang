@@ -1,3 +1,4 @@
+"use client"
 import {
     Sidebar,
     SidebarContent,
@@ -11,13 +12,13 @@ import {
 } from "@/components/ui/sidebar"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Home, Search, Bell, Activity, LogOut } from "lucide-react";
+import { Home, Search, Bell, Activity, LogOut, User } from "lucide-react";
 const links = [
     { href: "/", label: "Feed", icon: Home },
     { href: "/explore", label: "Explore", icon: Search },
     { href: "/activity", label: "Activity", icon: Activity },
     { href: "/notifications", label: "Notifications", icon: Bell },
-    { href: "/profile", label: "Profile", icon: Home },
+    { href: "/profile", label: "Profile", icon: User },
 ]
 
 import { usePathname } from "next/navigation";
@@ -33,9 +34,9 @@ export default function SideBar() {
            <SidebarHeader className="border-b border-border px-2 py-3">
                 <div className="flex items-center justify-between">
                     <span className="font-mono font-bold text-base group-data-[collapsible=icon]:hidden">
-                        GitGram
+                        Menu
                     </span>
-                    <SidebarTrigger />
+                    <SidebarTrigger className="data-[state=open]:rotate-180" />
                 </div>
             </SidebarHeader>
 
@@ -53,7 +54,6 @@ export default function SideBar() {
                                     <span>{link.label}</span>
                                 </Link>
                             </SidebarMenuButton>
-                            {link.label}
                         </SidebarMenuItem>
                     ))}
                 </SidebarGroup>
