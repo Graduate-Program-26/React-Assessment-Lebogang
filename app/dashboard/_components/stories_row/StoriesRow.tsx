@@ -12,8 +12,8 @@ export default function StoriesRow() {
     return (
         <Carousel opts={{ dragFree: true, align: "start" }} className="w-full">
             <CarouselContent className="w-full">
-                {stories.map((story, index) => (
-                    <CarouselItem key={index} className="basis-auto pl-3">
+                {stories.map((story) => (
+                    <CarouselItem key={story.username} className="basis-auto pl-3">
                         <StoryItem data={story} />
                     </CarouselItem>
                 ))}
