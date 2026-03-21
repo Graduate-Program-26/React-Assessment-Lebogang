@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import {GitBranch,  Copy, MapPin, Link2, Calendar, Github } from "lucide-react"
 import StoryItem from "../../dashboard/_components/stories_row/StoryItem"
 import ContributionCalender from "./ContributionCalender"
+import { mockProfileData } from "@/lib/mock/data"
 export interface ProfileHeaderProps {
     username: string
     name: string
@@ -19,7 +20,8 @@ export interface ProfileHeaderProps {
     isActive?: boolean
 }
 
-export default function ProfileHeader({ data }: { data: ProfileHeaderProps }) {
+export default function ProfileHeader() {
+    const data = mockProfileData;
     const joinYear = new Date(data.createdAt).getFullYear()
 
     return (

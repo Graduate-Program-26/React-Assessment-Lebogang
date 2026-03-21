@@ -1,19 +1,21 @@
+"use client"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Grid, Pin, Activity } from "lucide-react"
+import { useParams } from "next/navigation"
 
 import ProfileHeader from "../_components/ProfileHeader"
 import ProfileFeed from "../_components/ProfileFeed"
 import PinnedFeed from "../_components/PinnedFeed"
 import ActivityFeed from "../_components/ActivityFeed"
 
-import { mockProfileData } from "@/lib/mock/data"
-import { mockAllRepos } from "@/lib/mock/data"
 
 export default function ProfilePage() {
+    const { username } = useParams();
+
     return (
         <div className="w-full max-w-5xl mx-auto text-lg">
 
-            <ProfileHeader data={mockProfileData} />
+            <ProfileHeader />
 
             <Tabs defaultValue="grid">
                 <TabsList className="w-full rounded-none border-b border-border bg-transparent h-auto p-0">
@@ -38,15 +40,15 @@ export default function ProfilePage() {
                 </TabsList>
 
                 <TabsContent value="grid" className="mt-0">
-                    <ProfileFeed feed={mockAllRepos} />
+                    <ProfileFeed />
                 </TabsContent>
 
                 <TabsContent value="pinned" className="mt-0">
-                    <PinnedFeed feed={mockAllRepos.slice(0, 6).reverse()} />
+                    <PinnedFeed  />
                 </TabsContent>
 
                 <TabsContent value="activity" className="mt-0">
-                    <ActivityFeed feed={[]} />
+                    <ActivityFeed />
                 </TabsContent>
             </Tabs>
 

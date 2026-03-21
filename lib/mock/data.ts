@@ -1,6 +1,7 @@
 import { StoryItemProp } from "@/app/(app)/dashboard/_components/stories_row/StoryItem";
 import { FeedEvent } from "@/utils/types/feed";
 import { SuggestedDevProp } from "@/app/(app)/dashboard/_components/suggested_devs/SuggestedDev";
+import { GitHubRepo, GitHubUser } from "@/utils/types/types"
 
 
 export const mockFeedEvents: FeedEvent[] = [
@@ -307,11 +308,6 @@ export const mockProfileData = {
     createdAt: "2020-01-15T12:00:00Z",
     isActive: true,
 }
-
-
-
-
-import { GitHubRepo, GitHubUser } from "@/utils/types/types"
 
 
 export const mockOwnRepos: GitHubRepo[] = [

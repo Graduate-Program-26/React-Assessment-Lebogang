@@ -1,8 +1,8 @@
 
 import RepoCard from "@/components/shared/RepoCard"
-import { GitHubRepo } from "@/utils/types/types"
-
-export default function PinnedFeed({feed} : { feed: GitHubRepo[] }) {
+import { mockAllRepos } from "@/lib/mock/data"
+export default function PinnedFeed() {
+    const feed = mockAllRepos.slice(0, 6).reverse();
     return (
         <div className="grid grid-cols-3 gap-[1.5px] bg-border">
             {feed.map(repo => (
