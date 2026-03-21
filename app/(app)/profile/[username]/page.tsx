@@ -42,7 +42,7 @@ export default function ProfilePage() {
                 </TabsContent>
 
                 <TabsContent value="pinned" className="mt-0">
-                    <PinnedFeed feed={[]} />
+                    <PinnedFeed feed={mockAllRepos.slice(0, 6).reverse()} />
                 </TabsContent>
 
                 <TabsContent value="activity" className="mt-0">
