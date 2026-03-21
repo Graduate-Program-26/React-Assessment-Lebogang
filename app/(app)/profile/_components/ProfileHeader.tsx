@@ -57,7 +57,6 @@ export default function ProfileHeader({ data }: { data: ProfileHeaderProps }) {
                 </div>
             </div>
 
-            {/* name + bio */}
             <div className="flex flex-col gap-1">
                 <span className="font-semibold text-sm">{data.name}</span>
                 <span className="font-mono text-xs text-muted-foreground">@{data.username}</span>
@@ -66,11 +65,10 @@ export default function ProfileHeader({ data }: { data: ProfileHeaderProps }) {
                 )}
             </div>
 
-            {/* meta row */}
             <div className="flex flex-wrap gap-x-4 gap-y-1">
                 {data.location && (
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                        <MapPin className="w-3 h-3 flex-shrink-0" />
+                        <MapPin className="w-3 h-3" />
                         {data.location}
                     </div>
                 )}
@@ -81,19 +79,19 @@ export default function ProfileHeader({ data }: { data: ProfileHeaderProps }) {
                         rel="noopener noreferrer"
                         className="flex items-center gap-1.5 text-xs text-blue-400 hover:underline"
                     >
-                        <Link2 className="w-3 h-3 flex-shrink-0" />
+                        <Link2 className="w-3 h-3" />
                         {data.blog.replace(/^https?:\/\//, "")}
                     </a>
                 )}
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <Calendar className="w-3 h-3 flex-shrink-0" />
+                    <Calendar className="w-3 h-3" />
                     Joined {joinYear}
                 </div>
             </div>
 
                 <div className="flex items-center gap-2 mt-4">
                     <Github className="w-4 h-4" />
-                    <ContributionCalender data={[]} />
+                    <ContributionCalender username={"B-WayneZA"} />
                 </div>
 
             <div className="flex gap-2">
@@ -109,7 +107,7 @@ export default function ProfileHeader({ data }: { data: ProfileHeaderProps }) {
                 <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => navigator.clipboard.writeText(data.url)}
+                    onClick={() => navigator.clipboard.writeText("localhost:3000/profile/" + data.username)} // TODO: replace with actual deployed URL
                 >
                     <Copy className="w-3.5 h-3.5" />
                 </Button>

@@ -14,13 +14,13 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Home, Search, Bell, Activity, LogOut, User } from "lucide-react";
 const links = [
-    { href: "/", label: "Feed", icon: Home },
+    { href: "/dashboard", label: "Feed", icon: Home },
     { href: "/explore", label: "Explore", icon: Search },
     { href: "/activity", label: "Activity", icon: Activity },
     { href: "/notifications", label: "Notifications", icon: Bell },
-    { href: "/profile", label: "Profile", icon: User },
+    { href: "/profile/name", label: "Profile", icon: User },
 ]
-
+    
 import { usePathname } from "next/navigation";
 import { clsx } from "clsx";
 import Link from "next/link"
