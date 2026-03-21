@@ -25,7 +25,6 @@ export default function ProfileHeader({ data }: { data: ProfileHeaderProps }) {
     return (
         <div className="flex flex-col gap-4 p-4 ">
 
-            {/* avatar + stats row — instagram-style */}
             <div className="flex items-start gap-6">
                 <StoryItem data={{
                     avatar_url: data.profilePicture,
@@ -90,7 +89,6 @@ export default function ProfileHeader({ data }: { data: ProfileHeaderProps }) {
             </div>
 
                 <div className="flex items-center gap-2 mt-4">
-                    <Github className="w-4 h-4" />
                     <ContributionCalender username={"B-WayneZA"} />
                 </div>
 
