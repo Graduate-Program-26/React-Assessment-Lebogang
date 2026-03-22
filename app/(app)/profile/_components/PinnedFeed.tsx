@@ -1,6 +1,7 @@
 
 import RepoCard from "@/components/shared/RepoCard"
 import { mockAllRepos } from "@/lib/mock/data"
+
 export default function PinnedFeed() {
     const feed = mockAllRepos.slice(0, 6).reverse();
     return (

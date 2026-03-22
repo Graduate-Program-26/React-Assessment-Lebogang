@@ -5,22 +5,11 @@ import {GitBranch,  Copy, MapPin, Link2, Calendar, Github } from "lucide-react"
 import StoryItem from "../../dashboard/_components/stories_row/StoryItem"
 import ContributionCalender from "./ContributionCalender"
 import { mockProfileData } from "@/lib/mock/data"
-export interface ProfileHeaderProps {
-    username: string
-    name: string
-    profilePicture: string
-    bio: string
-    location?: string
-    blog?: string
-    followersCount: number
-    followingCount: number
-    repoCount: number
-    createdAt: string
-    url: string
-    isActive?: boolean
-}
+
+import { useParams } from "next/navigation"
 
 export default function ProfileHeader() {
+    // const { username } = useParams();
     const data = mockProfileData;
     const joinYear = new Date(data.createdAt).getFullYear()
 

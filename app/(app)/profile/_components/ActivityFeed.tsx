@@ -2,9 +2,7 @@ import ActivityCard from "@/components/shared/ActivityCard"
 import RepoCardEvent from "@/components/shared/RepoCardEvent"
 import { FeedEvent } from "@/utils/types/feed"
 
-interface ActivityFeedProps {
-    events: FeedEvent[]
-}
+
 import { mockFeedEvents } from "@/lib/mock/data"
 
 export default function ActivityFeed() {
