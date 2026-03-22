@@ -16,7 +16,7 @@ export default async function Home() {
 
         <div className="flex flex-col items-center gap-3">
           <h1 className="font-mono text-5xl font-bold tracking-tight">
-            dev<span className="text-blue-500">.</span>gram
+            Git<span className="text-blue-500">.</span>gram
           </h1>
           <p className="max-w-md text-muted-foreground">
             GitHub as a social feed. Follow developers, watch repos, and track activity — the way it should feel.
