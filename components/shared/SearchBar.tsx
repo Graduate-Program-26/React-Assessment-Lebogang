@@ -7,8 +7,9 @@ export default function SearchBar(values: {value: string, onChange: (value: stri
     function handleSearch() {
         // send to api route that will search for repositories, users, or issues based on the query
         // maybe also go to the explore page with the search query as a parameter and show the results there
-        
+       // values.onChange(values.value); // for now, just update the input value on search button click (since we don't have a real search implementation yet)
     }
+
     return (
         <div className="w-full max-w-md mx-auto">
             <Field orientation="horizontal">
