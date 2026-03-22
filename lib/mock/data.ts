@@ -2,6 +2,7 @@ import { StoryItemProp } from "@/app/(app)/dashboard/_components/stories_row/Sto
 import { FeedEvent } from "@/utils/types/feed";
 import { SuggestedDevProp } from "@/app/(app)/dashboard/_components/suggested_devs/SuggestedDev";
 import { GitHubRepo, GitHubUser } from "@/utils/types/types"
+import { ProfileCardProps } from "@/components/shared/ProfileCard";
 
 
 export const mockFeedEvents: FeedEvent[] = [
@@ -585,3 +586,39 @@ export const mockAllRepos = [
     ...mockOwnRepos,
     ...mockContributedRepos,
 ]
+
+
+export const mockSearchResults: ProfileCardProps[] = [
+    {
+        id: 1,
+        username: "john_doe",
+        name: "John Doe",
+        avatarUrl: "https://via.placeholder.com/150",
+        bio: "Software developer and open source enthusiast.",
+        repositories: 5
+    },
+    {
+        id: 2,
+        username: "jane_smith",
+        name: "Jane Smith",
+        avatarUrl: "https://via.placeholder.com/150",
+        bio: "Designer and frontend developer.",
+        repositories: 3
+    },
+    {
+        id: 3,
+        username: "alice_wonder",
+        name: "Alice Wonder",
+        avatarUrl: "https://via.placeholder.com/150",
+        bio: "Full-stack developer and tech blogger.",
+        repositories: 8
+    },
+    {
+        id: 4,
+        username: "bob_builder",
+        name: "Bob Builder",
+        avatarUrl: "https://via.placeholder.com/150",
+        bio: "DevOps engineer and cloud specialist.",
+        repositories: 2
+    }
+]; 
