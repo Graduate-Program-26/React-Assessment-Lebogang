@@ -9,6 +9,8 @@ import { useParams } from "next/navigation"
 import { fetchUsers } from "@/lib/actions/users.actions"
 import { useEffect, useState } from "react"
 import { GitHubUser } from "@/utils/types/types"
+import { ProfileHeaderSkeleton } from "./ProfileSkeletons"
+
 
 export default function ProfileHeader() {
     const { username } = useParams();
@@ -27,7 +29,7 @@ export default function ProfileHeader() {
         }
     }, [username]);
 
-    if (loading) return <div>Loading Instagram Profile...</div>;
+    if (loading) return <ProfileHeaderSkeleton />;
     
     if (!user) return <div>User not found</div>;
 
