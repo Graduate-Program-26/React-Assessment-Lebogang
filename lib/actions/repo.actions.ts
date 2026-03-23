@@ -32,37 +32,22 @@ export async function fetchRepo(owner: string, repo: string) {
     }
 
 }
-export async function fetchUserRepos(username: string, options?: { sort?: 'updated' | 'stars' | 'created', per_page?: number }){
+export async function fetchUserRepos(username: string, options?: { sort?: 'updated' | 'stars' | 'created', per_page?: number }): Promise<GitHubRepo[] | undefined> {
+        const session = await auth();
+    const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
+
       try {
-        const response = await fetch(`https://api.github.com/users/${username}/repos`);
+        const response = await fetch(`https://api.github.com/users/${username}/repos?sort=${options?.sort || 'updated'}&per_page=${options?.per_page || 30}`, {
+            headers: {
+                Authorization: `token ${token}`,
+            },
+        });
 
-        /*
-        sorting  options
-rt string
-The property to sort the results by.
-
-Default: full_name
-
-Can be one of: created, updated, pushed, full_name
-
-direction string
-The order to sort by. Default: asc when using full_name, otherwise desc.
-
-Can be one of: asc, desc
-
-per_page integer
-The number of results per page (max 100). For more information, see "Using pagination in the REST API."
-
-Default: 30
-
-page integer
-The page number of the results to fetch. For more information, see "Using pagination in the REST API."
-
-Default: 1
-        */
-        return response.json();
+        const data: GitHubRepo[] = await response.json();
+        return data;
     } catch (error) {
         console.error(error)
+        return [];
     }
 }
       

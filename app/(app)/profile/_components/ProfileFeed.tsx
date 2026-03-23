@@ -1,6 +1,5 @@
 "use client"
 import RepoCard from "@/components/shared/RepoCard"
-import { mockAllRepos } from "@/lib/mock/data"
 
 import { fetchRepos } from "@/lib/actions/repo.actions";
 import { useParams } from "next/navigation";
