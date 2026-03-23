@@ -1,4 +1,3 @@
-// app/(app)/explore/_components/ExploreClient.tsx
 "use client"
 
 import { useState } from "react"
@@ -8,7 +7,6 @@ import ProfileResults from "@/app/(app)/explore/_components/searched_content/Pro
 import RepoResults from "@/app/(app)/explore/_components/searched_content/RepoResults"
 import { Badge } from "@/components/ui/badge"
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs"
-
 type Filter = "all" | "repos" | "devs"
 
 export default function Home() {
