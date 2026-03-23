@@ -1,13 +1,15 @@
 
 
+// types/github.ts
+
 export interface GitHubUser {
-  login: string;               // Username (B-WayneZA)
+  login: string;          // The username 
   id: number;
   node_id: string;
-  avatar_url: string;          // The "Profile Picture"
+  avatar_url: string;     // Profile picture URL
   gravatar_id: string;
   url: string;
-  html_url: string;            // Link to actual GitHub profile
+  html_url: string;       // Link to the GitHub profile page
   followers_url: string;
   following_url: string;
   gists_url: string;
@@ -20,22 +22,24 @@ export interface GitHubUser {
   type: string;
   user_view_type: string;
   site_admin: boolean;
-  name: string | null;         // Display Name (Lebogang Masenya)
+  
+  name: string | null;    
   company: string | null;
   blog: string | null;
   location: string | null;
   email: string | null;
   hireable: boolean | null;
-  bio: string | null;          // "Let's build the impossible. 👨🏽‍💻🦇"
+  bio: string | null;
   twitter_username: string | null;
-  public_repos: number;        // Repo Count
+
+ 
+  public_repos: number;
   public_gists: number;
-  followers: number;           // Follower Count
-  following: number;           // Following Count
+  followers: number;
+  following: number;
   created_at: string;
   updated_at: string;
 }
-
 export interface GitHubEvent {
   // this is mad :()
 }

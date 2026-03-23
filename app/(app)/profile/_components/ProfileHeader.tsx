@@ -1,76 +1,96 @@
-"use client"
 
+"use client"
 import { Button } from "@/components/ui/button"
-import {GitBranch,  Copy, MapPin, Link2, Calendar, Github } from "lucide-react"
+import { GitBranch, Copy, MapPin, Link2, Calendar, Github } from "lucide-react"
 import StoryItem from "../../dashboard/_components/stories_row/StoryItem"
 import ContributionCalender from "./ContributionCalender"
 import { mockProfileData } from "@/lib/mock/data"
-
 import { useParams } from "next/navigation"
+import { fetchUsers } from "@/lib/actions/users.actions"
+import { useEffect, useState } from "react"
+import { GitHubUser } from "@/utils/types/types"
 
 export default function ProfileHeader() {
-    // const { username } = useParams();
-    const data = mockProfileData;
-    const joinYear = new Date(data.createdAt).getFullYear()
+    const { username } = useParams();
+    const [user, setUser] = useState<GitHubUser | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (username) {
+            const loadData = async () => {
+                setLoading(true);
+                const data = await fetchUsers(username as string);
+                if (data) setUser(data);
+                setLoading(false);
+            };
+            loadData();
+        }
+    }, [username]);
+
+    if (loading) return <div>Loading Instagram Profile...</div>;
+    
+    if (!user) return <div>User not found</div>;
+
+    const joinYear = new Date(user?.created_at || new Date()).getFullYear()
 
     return (
         <div className="flex flex-col gap-4 p-4 ">
 
             <div className="flex items-start gap-6">
                 <StoryItem data={{
-                    avatar_url: data.profilePicture,
-                    username: data.username,
-                    html_url: data.url,
-                    url: data.url,
-                    has_story: true,
+                    avatar_url: user?.avatar_url || "https://avatars.githubusercontent.com/u/9919?s=280&v=4", // fallback to github's octocat avatar
+                    username: user?.login || "unknown user",
+                    html_url: user?.html_url || "",
+                    url: user?.url || "",
+                    has_story: new Date(user?.updated_at).getTime() > Date.now() - 24 * 60 * 60 * 1000, // active if updated in the last 24 hours
                     is_self: true,
-                    is_active: data.isActive ?? false,
+                    is_active: new Date(user?.updated_at).getTime() > Date.now() - 24 * 60 * 60 * 1000, // active if updated in the last 24 hours
                 }} />
 
                 <div className="flex flex-1 justify-around pt-2">
                     <div className="flex flex-col items-center gap-0.5">
-                        <span className="text-lg font-bold leading-tight">{data.repoCount}</span>
+                        <span className="text-lg font-bold leading-tight">{user?.public_repos}</span>
                         <span className="text-xs text-muted-foreground">repos</span>
                     </div>
                     <div className="flex flex-col items-center gap-0.5">
                         <span className="text-lg font-bold leading-tight">
-                            {data.followersCount >= 1000
-                                ? `${(data.followersCount / 1000).toFixed(1)}k`
-                                : data.followersCount}
+                            {user?.followers >= 1000
+                                ? `${(user.followers / 1000).toFixed(1)}k`
+                                : user?.followers}
                         </span>
                         <span className="text-xs text-muted-foreground">followers</span>
                     </div>
                     <div className="flex flex-col items-center gap-0.5">
-                        <span className="text-lg font-bold leading-tight">{data.followingCount}</span>
+                        <span className="text-lg font-bold leading-tight">{user?.following}</span>
                         <span className="text-xs text-muted-foreground">following</span>
                     </div>
                 </div>
             </div>
 
             <div className="flex flex-col gap-1">
-                <span className="font-semibold text-sm">{data.name}</span>
-                <span className="font-mono text-xs text-muted-foreground">@{data.username}</span>
-                {data.bio && (
-                    <p className="text-sm text-muted-foreground leading-snug mt-1">{data.bio}</p>
+                <span className="font-semibold text-sm">{user?.name}</span>
+                <span className="font-mono text-xs text-muted-foreground">@{user?.login}</span>
+                {user?.bio && (
+                    <p className="text-sm text-muted-foreground leading-snug mt-1">{user.bio}</p>
                 )}
             </div>
 
             <div className="flex flex-wrap gap-x-4 gap-y-1">
-                {data.location && (
+                {user?.location && (
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                         <MapPin className="w-3 h-3" />
-                        {data.location}
+                        {user.location}
                     </div>
                 )}
-                {data.blog && (
+                {user?.blog && (
                     <a
-                        href={data.blog}
+                        href={user.blog}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-1.5 text-xs text-blue-400 hover:underline"
                     >
                         <Link2 className="w-3 h-3" />
-                        {data.blog.replace(/^https?:\/\//, "")}
+                        {user.blog.replace(/^https?:\/\//, "")}
                     </a>
                 )}
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -79,16 +99,16 @@ export default function ProfileHeader() {
                 </div>
             </div>
 
-                <div className="flex items-center gap-2 mt-4">
-                    <ContributionCalender username={"B-WayneZA"} />
-                </div>
+            <div className="flex items-center gap-2 mt-4">
+                <ContributionCalender username={user?.login} />
+            </div>
 
             <div className="flex gap-2">
                 <Button
                     variant="outline"
                     size="sm"
                     className="flex-1 gap-2"
-                    onClick={() => window.open(data.url, "_blank")}
+                    onClick={() => window.open(user?.url, "_blank")}
                 >
                     <GitBranch className="w-3.5 h-3.5" />
                     View on GitHub
@@ -96,7 +116,7 @@ export default function ProfileHeader() {
                 <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => navigator.clipboard.writeText("localhost:3000/profile/" + data.username)} // TODO: replace with actual deployed URL
+                    onClick={() => navigator.clipboard.writeText(`localhost:3000/profile/${user?.login}`)}
                 >
                     <Copy className="w-3.5 h-3.5" />
                 </Button>

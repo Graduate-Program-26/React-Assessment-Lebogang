@@ -8,8 +8,6 @@ import { clsx } from "clsx";
 const links = [
     { href: "/", label: "Feed", icon: Home },
     { href: "/explore", label: "Explore", icon: Search },
-    { href: "/activity", label: "Activity", icon: Activity },
-    { href: "/notifications", label: "Notifications", icon: Bell },
     { href: "/profile", label: "Profile", icon: Home },
 ]
 
@@ -30,7 +28,7 @@ export default function BottomBar() {
                     )}
                 >
                     <link.icon className="w-5 h-5" />
-                    <span className="text-[10px]">{link.label}</span>
+                    <span>{link.label}</span>
                 </Link>
             ))}
         </div>

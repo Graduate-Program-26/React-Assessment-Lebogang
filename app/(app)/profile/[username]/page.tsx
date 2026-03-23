@@ -1,7 +1,6 @@
-"use client"
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Grid, Pin, Activity } from "lucide-react"
-import { useParams } from "next/navigation"
 
 import ProfileHeader from "../_components/ProfileHeader"
 import ProfileFeed from "../_components/ProfileFeed"
@@ -10,12 +9,11 @@ import ActivityFeed from "../_components/ActivityFeed"
 
 
 export default function ProfilePage() {
-    
 
     return (
         <div className="w-full max-w-5xl mx-auto text-lg">
 
-            <ProfileHeader />
+            <ProfileHeader  />
 
             <Tabs defaultValue="grid">
                 <TabsList className="w-full rounded-none border-b border-border bg-transparent h-auto p-0">

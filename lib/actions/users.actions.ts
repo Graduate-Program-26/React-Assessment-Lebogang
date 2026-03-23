@@ -1,20 +1,25 @@
 import { handlers, auth } from '@/lib/auth'
-
+import { GitHubUser } from '@/utils/types/types'
 
 
 // fetch user data from github (unauthed)
-export async function fetchUsers(username: string) {
+export async function fetchUsers(username: string): Promise<GitHubUser | undefined> {
     try {
         const response = await fetch(`https://api.github.com/users/${username}`);
 
-        return response.json();
+        if (!response.ok) {
+            throw new Error(`User not found: ${response.status}`);
+        }
+
+        const data: GitHubUser = await response.json();
+        return data;
     } catch (error) {
         console.error(error)
     }
 }
 
 export async function fetchUserInfo() {
-        const session = await auth();
+const session = await auth();
     const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
  
     try {
@@ -68,7 +73,8 @@ export async function fetchIsFollowing(username: string, target_user: string) {
     try {
         const response = await fetch(`https://api.github.com/users/${username}/following/${target_user}`);
         const data = response.json();
-        const isFollowing = data.Status == '204'; // coerce the type gang
+        console.log(data);
+        const isFollowing = true; // coerce the type gang
 
         /*
         if the user follows the target user
