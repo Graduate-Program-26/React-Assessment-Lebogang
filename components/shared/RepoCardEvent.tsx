@@ -37,7 +37,7 @@ export default function RepoCardEvent({ event }: RepoCardProps) {
             <CardContent className="pb-3">
                 <p className="text-sm text-muted-foreground leading-relaxed">
                     {event.type === "PushEvent"
-                        ? (event.commits.map((commit) => commit.commit.message).join("\n") || "No commit message")
+                        ? (event.commits?.map((commit) => commit.commit.message).join("\n") || "No commit message")
                         : event.payload.pull_request.title}
                 </p>
             </CardContent>
@@ -51,7 +51,7 @@ export default function RepoCardEvent({ event }: RepoCardProps) {
 
 function EventBadge({ event }: { event: PushEvent | PullRequestEvent }) {
     if (event.type === "PushEvent") {
-        const count = event.commits.length
+        const count = event.commits?.length
         return (
             <Badge variant="secondary" className="gap-1 font-mono text-xs">
                 <GitCommitHorizontal className="w-3 h-3" />
