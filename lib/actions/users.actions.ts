@@ -1,8 +1,10 @@
 "use server"
-import { handlers, auth } from '@/lib/auth'
+import {  auth } from '@/lib/auth'
 import { GitHubUser } from '@/utils/types/types'
 import { cacheLife } from 'next/cache';
+import { FeedEvent } from '@/utils/types/feed';
 
+import {fetchRepoCommits} from './repo.actions';
 // fetch user data from github (unauthed)
 export async function fetchUsers(username: string): Promise<GitHubUser | undefined> {
     try {
@@ -92,22 +94,36 @@ export async function fetchIsFollowing(username: string, target_user: string) {
         console.error(error);
     }
 }
-export async function fetchContributionCalendar(username: string) {// githubGraphQL
+
+export async function fetchUserEvents({username,
+  pageParam = 1, 
+  per_page = 10 
+}: { 
+  username: string; 
+  pageParam?: number; 
+  per_page?: number 
+}) : Promise<FeedEvent[] | undefined> {
     try {
-        const response = await fetch(`https://api.github.com/users/${username}/following`); // @ TODO, not sure here
-        return response.json();
+        const response = await fetch(`https://api.github.com/users/${username}/events/public?page=${pageParam}&per_page=${per_page}`);
+
+    
+        if (!response.ok) throw new Error("Failed to fetch events");
+
+        // merge with repo commits if it's a push event
+        const events: FeedEvent[] = await response.json();
+
+        const enrichedEvents = await Promise.all(events.map(async (event) => {
+            if (event.type === "PushEvent") {
+                const [owner, repo] = event.repo.name.split("/");
+                const commits = await fetchRepoCommits(owner, repo);
+                return { ...event, commits };
+            }
+            return event;
+        }));
+        const data: FeedEvent[] = enrichedEvents; // what a painful exp this was :()
+        return data;
     } catch (error) {
         console.error(error);
+        return [];
     }
-
-}
-export async function fetchUserEvents(username: string, per_page?: number) {
-    try {
-        const response = await fetch(`https://api.github.com/users/${username}/events/public`);
-        return response.json();
-    } catch (error) {
-        console.error(error);
-    }
-
-
 }

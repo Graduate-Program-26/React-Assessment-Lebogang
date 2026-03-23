@@ -1,25 +1,28 @@
-// components/Providers.tsx
-"use client";
+"use client"
 
-import { SessionProvider } from "next-auth/react";
-import { ThemeProvider } from "@/components/theme-provider";
-import { auth } from "@/lib/auth";
+import { useState } from "react"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { TooltipProvider } from "@/components/ui/tooltip"
+import { SidebarProvider } from "@/components/ui/sidebar"
 
-export async function Providers({ children }: { children: React.ReactNode }) {
- const session = await auth()
-    
-  return (
-    <SessionProvider
-        session={session}
-    > 
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
-        {children}
-      </ThemeProvider>
-    </SessionProvider>
-  );
+export default function AppProviders({ children }: { children: React.ReactNode }) {
+    // useState ensures a new QueryClient per component instance, not shared
+    const [queryClient] = useState(() => new QueryClient({
+        defaultOptions: {
+            queries: {
+                staleTime: 60 * 1000,    // 1 min — reduces refetches
+                retry: 1,
+            },
+        },
+    }))
+
+    return (
+        <QueryClientProvider client={queryClient}>
+            <TooltipProvider>
+                <SidebarProvider>
+                    {children}
+                </SidebarProvider>
+            </TooltipProvider>
+        </QueryClientProvider>
+    )
 }
