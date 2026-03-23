@@ -1,10 +1,6 @@
 import RepoCard from "@/components/shared/RepoCard"
-import { GitHubRepo } from "@/utils/types/types"
-import { mockProfileData } from "@/lib/mock/data"
 import { mockAllRepos } from "@/lib/mock/data"
-interface ProfileFeedProps {
-    feed: GitHubRepo[],
-}
+
 
 export default function ProfileFeed() {
     const feed = mockAllRepos;

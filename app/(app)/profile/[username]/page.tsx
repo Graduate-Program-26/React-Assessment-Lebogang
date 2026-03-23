@@ -10,7 +10,7 @@ import ActivityFeed from "../_components/ActivityFeed"
 
 
 export default function ProfilePage() {
-    const { username } = useParams();
+    
 
     return (
         <div className="w-full max-w-5xl mx-auto text-lg">

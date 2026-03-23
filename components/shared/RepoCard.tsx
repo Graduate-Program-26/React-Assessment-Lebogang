@@ -33,14 +33,12 @@ export default function RepoCard({ repo }: { repo: GitHubRepo }) {
                     <span className="font-mono text-4xl font-semibold text-foreground  line-clamp-1">
                         {repo.name}
                     </span>
-                    {repo.fork && (
-                        <Badge
-                            variant="secondary"
-                            className="text-[8px] px-1 py-0 h-4 font-mono"
-                        >
-                           <GitFork/> fork
-                        </Badge>
+                    {repo.owner && (
+                        <span className="flex align-text text-1xl text-muted-foreground font-mono">
+                            {repo.owner}
+                        </span>
                     )}
+
                 </div>
 
                 {repo.description && (
@@ -66,6 +64,8 @@ export default function RepoCard({ repo }: { repo: GitHubRepo }) {
                             +{repo.languages.length - 2}
                         </span>
                     )}
+
+
                 </div>
             </div>
 
@@ -94,8 +94,19 @@ export default function RepoCard({ repo }: { repo: GitHubRepo }) {
                             {repo.pr_count ?? 0}
                         </span>
                     </div>
-                </div>
+                    {repo.fork && (
 
+                        <div className="flex flex-col items-center gap-0.5">
+                            <Badge
+                                variant="secondary"
+                                className="text-[8px] px-1 py-0 h-4 font-mono"
+                            >
+                                <GitFork /> fork
+                            </Badge>
+                        </div>
+
+                    )}
+                </div>
 
 
             </div>

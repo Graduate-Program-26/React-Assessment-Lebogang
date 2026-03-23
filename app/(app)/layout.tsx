@@ -20,7 +20,6 @@ export default async function AppLayout({ children }: { children: React.ReactNod
                     </aside>
 
                     <div className="flex flex-1 flex-col">
-                        <Navbar />
                         <main className="flex-1 pt-13 pb-20 md:pb-0">
                             {children}
                         </main>
