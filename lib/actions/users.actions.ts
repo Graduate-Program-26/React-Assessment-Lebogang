@@ -1,11 +1,17 @@
+"use server"
 import { handlers, auth } from '@/lib/auth'
 import { GitHubUser } from '@/utils/types/types'
-
+import { cacheLife } from 'next/cache';
 
 // fetch user data from github (unauthed)
 export async function fetchUsers(username: string): Promise<GitHubUser | undefined> {
     try {
-        const response = await fetch(`https://api.github.com/users/${username}`);
+        'use cache';
+        const response = await fetch(`https://api.github.com/users/${username}`, {
+            next: {
+                revalidate: 86400, // revalidate every 24 hours
+            },
+        });
 
         if (!response.ok) {
             throw new Error(`User not found: ${response.status}`);
@@ -19,9 +25,9 @@ export async function fetchUsers(username: string): Promise<GitHubUser | undefin
 }
 
 export async function fetchUserInfo() {
-const session = await auth();
+    const session = await auth();
     const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
- 
+
     try {
         const response = await fetch(`https://api.github.com/user`, {
             headers: {
@@ -36,7 +42,7 @@ const session = await auth();
 }
 
 export async function discoverUsers() {
-     try {
+    try {
         const response = await fetch(`https://api.github.com/users`);
         // get only a few (pagination)
         return response.json();
@@ -48,8 +54,8 @@ export async function discoverUsers() {
 
 
 // fetch user followers from github
-export async function fetchUserFollowers(username :string) {
-        try {
+export async function fetchUserFollowers(username: string) {
+    try {
         const response = await fetch(`https://api.github.com/users/${username}/followers`);
 
         return response.json();
@@ -58,8 +64,8 @@ export async function fetchUserFollowers(username :string) {
     }
 }
 // fetch user following from github
-export async function fetchUserFollowing(username :string) {
-        try {
+export async function fetchUserFollowing(username: string) {
+    try {
         const response = await fetch(`https://api.github.com/users/${username}/following`);
 
         return response.json();
@@ -86,8 +92,8 @@ export async function fetchIsFollowing(username: string, target_user: string) {
         console.error(error);
     }
 }
-export async function fetchContributionCalendar(username: string)   {// githubGraphQL
-      try {
+export async function fetchContributionCalendar(username: string) {// githubGraphQL
+    try {
         const response = await fetch(`https://api.github.com/users/${username}/following`); // @ TODO, not sure here
         return response.json();
     } catch (error) {
@@ -96,7 +102,7 @@ export async function fetchContributionCalendar(username: string)   {// githubGr
 
 }
 export async function fetchUserEvents(username: string, per_page?: number) {
-  try {
+    try {
         const response = await fetch(`https://api.github.com/users/${username}/events/public`);
         return response.json();
     } catch (error) {

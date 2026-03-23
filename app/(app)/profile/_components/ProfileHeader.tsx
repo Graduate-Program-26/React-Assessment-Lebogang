@@ -31,7 +31,13 @@ export default function ProfileHeader() {
 
     if (loading) return <ProfileHeaderSkeleton />;
     
-    if (!user) return <div>User not found</div>;
+    if (!user) return (
+        <div className="flex flex-col items-center gap-4 p-4">
+            <Github className="w-12 h-12 text-muted-foreground" />
+            <span className="text-lg font-semibold">User not found</span>
+            <span className="text-sm text-muted-foreground">The user you are looking for does not exist. (Or there is an issue on our side)</span>
+        </div>
+    )
 
     const joinYear = new Date(user?.created_at || new Date()).getFullYear()
 
@@ -110,7 +116,7 @@ export default function ProfileHeader() {
                     variant="outline"
                     size="sm"
                     className="flex-1 gap-2"
-                    onClick={() => window.open(user?.url, "_blank")}
+                    onClick={() => window.open(user?.html_url, "_blank")}
                 >
                     <GitBranch className="w-3.5 h-3.5" />
                     View on GitHub

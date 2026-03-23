@@ -28,7 +28,7 @@ export default function BottomBar() {
                     )}
                 >
                     <link.icon className="w-5 h-5" />
-                    <span>{link.label}</span>
+                    {link.label}
                 </Link>
             ))}
         </div>

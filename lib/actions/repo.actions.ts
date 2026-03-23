@@ -1,19 +1,21 @@
+"use server"
 import { auth } from '@/lib/auth';
-
+import { GitHubRepo } from '@/utils/types/types';
 
  // fetch user repositories from github
-export async function fetchRepos(username: string) {
+export async function fetchRepos(username: string): Promise<GitHubRepo[] | undefined> { 
     const session = await auth();
     const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
- 
     try {
-        const response = await fetch(`https://api.github.com/users/${username}`, {
+        const response = await fetch(`https://api.github.com/users/${username}/repos`, {
             headers: {
                 Authorization: `token ${token}`,
             },
         });
 
-        return response.json();
+        const data: GitHubRepo[] = await response.json();
+        return data;
+
     } catch (error) {
         console.error(error);
     }
@@ -138,3 +140,4 @@ export async function fetchRepoCommits(owner: string, repo: string) {
     }
     
 }
+

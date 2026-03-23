@@ -1,15 +1,18 @@
+
 import { redirect } from "next/navigation"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import Navbar from "@/components/naviagtion/NavBar";
 import SideBar from "@/components/naviagtion/SideBar";
 import BottomBar from "@/components/naviagtion/BottomBar";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { toast } from "sonner";
 import { auth } from "@/lib/auth";
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
 
     const session = await auth()
 
     if (!session) {
+      
         redirect("/")
     }
 
