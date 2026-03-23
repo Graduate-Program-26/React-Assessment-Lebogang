@@ -2,7 +2,7 @@
 
 import { FeedEvent } from "@/utils/types/feed";
 import ActivityCard from "@/components/shared/ActivityCard";
-import RepoCardEvent from "@/components/shared/RepoCard";
+import RepoCardEvent from "@/components/shared/RepoCardEvent";
 
 
 export default function FeedItem({ data }: { data: FeedEvent }) {
