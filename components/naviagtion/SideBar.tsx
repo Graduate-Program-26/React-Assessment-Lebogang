@@ -1,36 +1,38 @@
 "use client"
-import {
-    Sidebar,
-    SidebarContent,
-    SidebarFooter,
-    SidebarGroup,
-    SidebarHeader,
-    SidebarMenuItem,
-    SidebarMenuButton,
-    SidebarTrigger,
-    SidebarMenu
-} from "@/components/ui/sidebar"
 
+import {
+    Sidebar, SidebarContent, SidebarFooter, SidebarGroup,
+    SidebarHeader, SidebarMenuItem, SidebarMenuButton,
+    SidebarTrigger, SidebarMenu
+} from "@/components/ui/sidebar"
+import { signOut, useSession } from "next-auth/react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Home, Search, Bell, Activity, LogOut, User, Moon, Sun } from "lucide-react";
-const links = [
-    { href: "/dashboard", label: "Feed", icon: Home },
-    { href: "/explore", label: "Explore", icon: Search },
-    { href: "/profile/name", label: "Profile", icon: User },
+import { Home, Search, Bell, Activity, LogOut, User, Moon, Sun } from "lucide-react"
+import { usePathname } from "next/navigation"
+import Link from "next/link"
+import { Button } from "../ui/button"
+import { useTheme } from "next-themes"
+import clsx from "clsx"
+
+const BASE_LINKS = [
+    { href: "/dashboard", label: "Feed",    icon: Home   },
+    { href: "/explore",   label: "Explore", icon: Search },
 ]
 
-import { usePathname } from "next/navigation";
-import { clsx } from "clsx";
-import Link from "next/link"
-import { Button } from "../ui/button";
-import { useTheme } from "next-themes";
+export default function SideBar({user}: {user: {name: string, image: string, username: string}}) {
+    const pathname = usePathname()
+    const { setTheme, resolvedTheme } = useTheme();
 
-// desktop view 
-export default function SideBar() {
-    const pathname = usePathname();
-    const { setTheme, resolvedTheme, } = useTheme();
     const handleThemeToggle = () => setTheme(resolvedTheme === "dark" ? "light" : "dark");
 
+    const links = [
+        ...BASE_LINKS,
+        // only add profile link once we have the username
+        ...(user?.username
+            ? [{ href: `/profile/${user.username}`, label: "Profile", icon: User }]
+            : []
+        ),
+    ]
 
     return (
         <Sidebar side="left" collapsible="icon">
@@ -39,44 +41,67 @@ export default function SideBar() {
                     <span className="font-mono font-bold text-base group-data-[collapsible=icon]:hidden">
                         GitGram
                     </span>
-                    <SidebarTrigger className="data-[state=open]:rotate-180" />
+                    <SidebarTrigger />
                 </div>
             </SidebarHeader>
 
             <SidebarContent>
-                <SidebarGroup title="Main">
-                    {links.map((link) => (
-                        <SidebarMenuItem key={link.href}>
+                <SidebarGroup>
+                    <SidebarMenu>
+                        {links.map((link) => (
+                            <SidebarMenuItem key={link.href}>
+                                <SidebarMenuButton
+                                    asChild
+                                    isActive={pathname === link.href}
+                                    tooltip={link.label}
+                                >
+                                    <Link href={link.href}>
+                                        <link.icon className="w-4 h-4" />
+                                        <span>{link.label}</span>
+                                    </Link>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                        ))}
+
+                        <SidebarMenuItem>
                             <SidebarMenuButton
-                                asChild
-                                isActive={pathname === link.href}
-                                tooltip={link.label}
+                                tooltip={resolvedTheme === "dark" ? "Light mode" : "Dark mode"}
+                                onClick={handleThemeToggle}
                             >
-                                <Link href={link.href}>
-                                    <link.icon className="w-4 h-4" />
-                                    <span>{link.label}</span>
-                                </Link>
+                                <Sun className="w-4 h-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+                                <Moon className="absolute w-4 h-4 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+                                <span>Toggle theme</span>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
-                    ))}
-
-                    <SidebarMenuItem>
-                        <Button variant="outline" size="icon" onClick={handleThemeToggle} className="mt-1">
-                            <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-                            <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-                            <span className="sr-only">Toggle theme</span>
-                        </Button>
-                    </SidebarMenuItem>
+                    </SidebarMenu>
                 </SidebarGroup>
             </SidebarContent>
 
-
             <SidebarFooter className="border-t border-border">
                 <SidebarMenu>
+                    {/* user info */}
+                    {user && (
+                        <SidebarMenuItem>
+                            <SidebarMenuButton tooltip={user.name ?? ""}>
+                                <Avatar className="w-5 h-5">
+                                    <AvatarImage src={user.image ?? ""} />
+                                    <AvatarFallback className="text-[10px]">
+                                        {user.name?.[0]}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <span className="text-sm font-medium truncate">
+                                    {user.name}
+                                </span>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    )}
+
                     <SidebarMenuItem>
-                        <SidebarMenuButton tooltip="Logout">
-                            <LogOut className="w-4 h-4" />
-                            <span>Logout</span>
+                        <SidebarMenuButton
+                            tooltip="Sign out"
+                            onClick={() => signOut({ callbackUrl: "/" })}
+                        >
+                            <span> <LogOut className="w-4 h-4" /> Sign out</span>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>

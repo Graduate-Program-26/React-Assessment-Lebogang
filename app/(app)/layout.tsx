@@ -4,19 +4,28 @@ import Navbar from "@/components/naviagtion/NavBar";
 import SideBar from "@/components/naviagtion/SideBar";
 import BottomBar from "@/components/naviagtion/BottomBar";
 import { TooltipProvider } from "@/components/ui/tooltip";
-
+import { auth } from "@/lib/auth";
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-    const session = true; // await getSession() --- IGNORE ---
 
-    // protect every (app) route at the layout level
-    if (!session) redirect("/") // protects main app
+    const session = await auth()
+
+    if (!session) {
+        redirect("/")
+    }
+
+    const user = {
+        name: session.user?.name ?? "",
+        username: session.user?.username ?? "",
+        image: session.user?.image ?? "",
+        accessToken: session.accessToken,
+    }
 
     return (
         <TooltipProvider>
             <SidebarProvider>
                 <div className="flex min-h-screen w-full">
                     <aside className="hidden md:flex">
-                        <SideBar />
+                        <SideBar user={user} />
                     </aside>
 
                     <div className="flex flex-1 flex-col">
