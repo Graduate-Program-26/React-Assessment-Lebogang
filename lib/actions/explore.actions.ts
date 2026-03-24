@@ -4,8 +4,8 @@ export async function searchRepos(query: string, options?: { language?: string, 
     try {
         const response = await fetch(`https://api.github.com/search/repositories?q=${query}${options?.language ? `+language:${options.language}` : ''}&sort=${options?.sort || 'stars'}&per_page=${options?.per_page || 10}`);
 
-        const data : GitHubRepo[] = await response.json();
-        return data;
+        const data = await response.json();
+        return data.items;
     } catch (error) {
         console.error(error);
         return [];
