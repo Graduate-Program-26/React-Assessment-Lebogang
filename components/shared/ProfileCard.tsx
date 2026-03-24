@@ -11,19 +11,18 @@ export interface ProfileCardProps {
     avatarUrl: string;
 }
 
-export default function ProfileCard({data} : {data: ProfileCardProps}) {
+import { GitHubUser } from "@/utils/types/types";
+export default function ProfileCard({data} : {data: GitHubUser}) {
     return (
         <div className="border rounded-lg p-4 mb-4">
             <Avatar className="w-16 h-16 mt-4">
-                <AvatarImage src={data.avatarUrl} alt={`${data.username}'s avatar`} />
-                <AvatarFallback>{data.username.charAt(0)}</AvatarFallback>
+                <AvatarImage src={data.avatar_url} alt={`${data.login}'s avatar`} />
+                <AvatarFallback>{data.login.charAt(0)}</AvatarFallback>
             </Avatar>
 
-            <h2 className="text-xl font-semibold mb-2">{data.username}</h2>
-            <p className="text-gray-600">{data.bio}</p>
-            <p className="text-gray-600 mt-2">Repositories: {data.repositories}</p>
+            <h2 className="text-xl font-semibold mb-2">{data.login}</h2>
 
-            <Link href={`/profile/${data.username}`}>
+            <Link href={`/profile/${data.login}`}>
                 <Button className="mt-4">View Profile</Button>
             </Link>
         </div>

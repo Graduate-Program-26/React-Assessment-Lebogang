@@ -1,6 +1,8 @@
 
 import RepoCard from "@/components/shared/RepoCard"
 import { mockContributedRepos } from "@/lib/mock/data"
+import { searchRepos } from "@/lib/actions/explore.actions"
+
 export default function RepoResults({query}: {query: string}) { // would be repo name and search
     return (
         <div className="p-4">
