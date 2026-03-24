@@ -24,8 +24,16 @@ export async function fetchRepos(username: string): Promise<GitHubRepo[] | undef
 
 
 export async function fetchRepo(owner: string, repo: string) {
+    const session = await auth();
+    const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
+
     try {
-        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`,  {
+            headers: {
+                Authorization: `token ${token}`,
+            },
+        });
+        
         return response.json();
     } catch (error) {
         console.error(error)

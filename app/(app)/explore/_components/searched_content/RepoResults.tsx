@@ -15,7 +15,6 @@ export default function RepoResults({ query }: { query: string }) { // would be 
             const loadData = async () => {
                 setLoading(true);
                 const data = await searchRepos(query, { per_page: 12 });
-                console.log("Fetched repos:", data);
                 if (data) setRepos(data);
                 setLoading(false);
             };

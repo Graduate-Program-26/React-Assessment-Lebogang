@@ -38,7 +38,6 @@ export default function Home() {
                             </TabsTrigger>
                         </TabsList>
                     </Tabs>
-                    <Badge variant="outline">{filter === "all" ? "Showing all results" : `Filtering by ${filter}`}</Badge>
                 </div>
             )}
 
