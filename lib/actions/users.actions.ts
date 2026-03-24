@@ -45,9 +45,17 @@ export async function fetchUserInfo() {
 
 export async function discoverUsers() {
     try {
-        const response = await fetch(`https://api.github.com/users`);
+        const response = await fetch(`https://api.github.com/users?per_page=20`);
+        const users =  await response.json();
+        for(const user of users) {
+            const lastPushDate = await fetchDateOfLastPush(user.login);
+            user.is_active = !!lastPushDate; // coerce to boolean, double bang operators >< 
+            user.hasStory = !!lastPushDate; // for simplicity, we consider users with a push in the last 24h as having a story
+        }
+
         // get only a few (pagination)
-        return response.json();
+        const data = users.filter((user: any) => user.public_repos > 0).slice(0, 20).map((user: any) => ({...user, is_active: !!user.lastPushDate, hasStory: !!user.lastPushDate}));
+        return data;
     } catch (error) {
         console.error(error)
     }
@@ -106,6 +114,7 @@ export async function fetchUserEvents({username,
     try {
         const response = await fetch(`https://api.github.com/users/${username}/events/public?page=${pageParam}&per_page=${per_page}`);
 
+        
     
         if (!response.ok) throw new Error("Failed to fetch events");
 
@@ -125,5 +134,33 @@ export async function fetchUserEvents({username,
     } catch (error) {
         console.error(error);
         return [];
+    }
+}
+
+async function fetchDateOfLastPush(username: string): Promise<Date | null> {
+    const session = await auth();
+    const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
+    try {
+        const response = await fetch(`https://api.github.com/users/${username}/events/public?per_page=1`, {
+            next: {
+                revalidate: 3600, // revalidate every hour
+            },
+            headers: {
+                Authorization: `token ${token}`,
+            },
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to fetch events for user ${username}`);
+        }
+        const events = await response.json();
+        const pushEvent = events.find((event: any) => event.type === "PushEvent");
+
+        if(pushEvent && pushEvent.created_at < new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()) { // check if the push event is within the last 24 hours
+            return new Date(pushEvent.created_at);
+        }
+        return null;
+    } catch (error) {
+        console.error(error);
+        return null;
     }
 }
