@@ -123,19 +123,23 @@ export async function fetchUserEvents({username,
   pageParam = 1, 
   per_page = 10 
 }: { 
-  username: string; 
+  username?: string; 
   pageParam?: number; 
   per_page?: number 
 }) : Promise<FeedEvent[] | undefined> {
     const session = await auth();
     const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
+    const url = username 
+        ? `https://api.github.com/users/${username}/events/public?page=${pageParam}&per_page=${per_page}`
+        : `https://api.github.com/events?per_page=${per_page}`;
+
     try {
-        const response = await fetch(`https://api.github.com/users/${username}/events/public?page=${pageParam}&per_page=${per_page}`, {
-             headers: {
+        const response = await fetch(url, {
+            headers: {
                 Authorization: `token ${token}`,
             },
+            next: { revalidate: username ? 0 : 60 } 
         });
-
         if (!response.ok) throw new Error("Failed to fetch events");
 
         // merge with repo commits if it's a push event
