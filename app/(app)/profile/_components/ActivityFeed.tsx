@@ -20,12 +20,14 @@ export default function ActivityFeed() {
         status,
     } = useInfiniteQuery({
         queryKey: ["events", username],
+        staleTime: 1000 * 60 * 15, // 15 minutes
         queryFn: ({ pageParam }) => fetchUserEvents({ username: username as string, pageParam }),
         initialPageParam: 1,
         getNextPageParam: (lastPage, allPages) => {
             // If the last page was empty, there are no more pages
             return lastPage && lastPage.length > 0 ? allPages.length + 1 : undefined;
         },
+        
     });
 
 
@@ -43,7 +45,6 @@ export default function ActivityFeed() {
         )
     }
 
-    console.log(events) // Log the events to the console for debugging
 
     return (
         <div className="flex flex-col divide-y divide-border">

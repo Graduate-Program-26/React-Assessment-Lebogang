@@ -35,16 +35,12 @@ export default function RepoCardEvent({ event }: RepoCardProps) {
             </CardHeader>
 
             <CardContent className="pb-3">
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-4">
                     {event.type === "PushEvent"
                         ? (event.commits?.map((commit) => commit.commit.message).join("\n") || "No commit message")
                         : event.payload.pull_request.title}
                 </p>
             </CardContent>
-
-            <CardFooter className=" flex items-center gap-4 text-xs text-muted-foreground border-t border-border pt-3">
-                        {/* Repo stats details  */}
-            </CardFooter>
         </Card>
     )
 }
