@@ -1,26 +1,37 @@
 "use client";
-import {type StoryItemProp} from "./StoryItem";
+import { type StoryItemProp } from "./StoryItem";
 import StoryItem from "./StoryItem";
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
+    Carousel,
+    CarouselContent,
+    CarouselItem,
 } from "@/components/ui/carousel"
 
 import { useEffect, useState } from "react";
-import {discoverUsers} from "@/lib/actions/users.actions";
+import { discoverUsers } from "@/lib/actions/users.actions";
 import { Skeleton } from "@/components/ui/skeleton";
+import { GitHubUser } from "@/utils/types/types";
 export default function StoriesRow() {
     const [loading, setLoading] = useState(true);
     const [storiesData, setStoriesData] = useState<StoryItemProp[]>([]);
-    
+
     useEffect(() => {
         const loadData = async () => {
             setLoading(true);
             const data = await discoverUsers();
-            console.log(data);
+
             if (data) {
-                setStoriesData(data);
+                const formattedData: StoryItemProp[] = (data ?? []).filter((user): user is GitHubUser => !!user).map((user) => ({
+                    username: user.login,
+                    avatar_url: user.avatar_url,
+                    html_url: user.html_url,
+                    url: user.html_url,
+                    is_self: false,
+                    is_active: !!user.updated_at && new Date(user.updated_at).getTime() > Date.now() - 86400000,
+                    has_story: !!user.updated_at && new Date(user.updated_at).getTime() > Date.now() - 86400000,
+                }));
+
+                setStoriesData(formattedData);
             }
             setLoading(false);
         };
