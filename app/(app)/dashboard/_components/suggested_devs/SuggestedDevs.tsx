@@ -1,4 +1,4 @@
-
+"use client"
 import SuggestedDev from "./SuggestedDev";
 import {
     ItemGroup
@@ -6,10 +6,34 @@ import {
 
 
 import { SuggestedDevProp } from "./SuggestedDev";
-
-import { mockSuggestions } from "@/lib/mock/data";
+import { suggestUsers } from "@/lib/actions/explore.actions";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useEffect, useState } from "react";
 export default function SuggestedDevs() {
-    const suggestions: SuggestedDevProp[] = mockSuggestions
+    const [suggestions, setSuggestions] = useState<SuggestedDevProp[]>([]);
+    
+    useEffect(() => {
+        const loadSuggestions = async () => {
+            const data = await suggestUsers(7);
+            console.log("Suggested users:", data);
+            setSuggestions(data as SuggestedDevProp[]);
+        };
+        loadSuggestions();
+    }, []);
+
+    if(suggestions === undefined || suggestions.length === 0) {
+        return (
+            <div className="space-y-4">
+                <div>Suggested Devs</div>
+                <ItemGroup>
+                    {Array.from({ length: 5 }).map((_, index) => (
+                        <Skeleton key={index} className="w-full h-16 rounded-md" />
+                    ))}
+                </ItemGroup>
+            </div>
+        )
+    }
+
     return (
         <div className="space-y-4">
             <div>Suggested Devs</div>

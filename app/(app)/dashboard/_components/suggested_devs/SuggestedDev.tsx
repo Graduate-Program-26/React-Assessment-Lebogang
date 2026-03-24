@@ -18,7 +18,7 @@ export interface SuggestedDevProp {
 
 export default function SuggestedDev({ data }: { data: SuggestedDevProp }) {
   function handleViewProfile() {
-    window.open(data.url, "_blank");
+    window.open(`http://localhost:3000/profile/${data.username}`, "_blank");
   }
 
   return (
@@ -40,7 +40,7 @@ export default function SuggestedDev({ data }: { data: SuggestedDevProp }) {
       </ItemContent>
 
       <ItemActions>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" onClick={handleViewProfile}>
           View Profile
         </Button>
       </ItemActions>

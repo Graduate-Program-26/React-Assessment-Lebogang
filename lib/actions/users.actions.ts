@@ -9,11 +9,18 @@ import {fetchRepoCommits} from './repo.actions';
 export async function fetchUsers(username: string): Promise<GitHubUser | undefined> {
     try {
         'use cache';
+        const session = await auth();
+        const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
         const response = await fetch(`https://api.github.com/users/${username}`, {
             next: {
                 revalidate: 86400, // revalidate every 24 hours
             },
+             headers: {
+                Authorization: `token ${token}`,
+            },
         });
+
+    
 
         if (!response.ok) {
             throw new Error(`User not found: ${response.status}`);
@@ -43,9 +50,16 @@ export async function fetchUserInfo() {
     }
 }
 
-export async function discoverUsers() {
+export async function discoverUsers(per_page: number = 20) {
+    const session = await auth();
+    const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
     try {
-        const response = await fetch(`https://api.github.com/users?per_page=20`);
+        const response = await fetch(`https://api.github.com/users?per_page=${per_page}`, {
+          headers: {
+                Authorization: `token ${token}`,
+            },
+        });
+
         const users =  await response.json(); // get usernames
         const userArr = [];
         for(const user of users) {
@@ -113,11 +127,15 @@ export async function fetchUserEvents({username,
   pageParam?: number; 
   per_page?: number 
 }) : Promise<FeedEvent[] | undefined> {
+    const session = await auth();
+    const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
     try {
-        const response = await fetch(`https://api.github.com/users/${username}/events/public?page=${pageParam}&per_page=${per_page}`);
+        const response = await fetch(`https://api.github.com/users/${username}/events/public?page=${pageParam}&per_page=${per_page}`, {
+             headers: {
+                Authorization: `token ${token}`,
+            },
+        });
 
-        
-    
         if (!response.ok) throw new Error("Failed to fetch events");
 
         // merge with repo commits if it's a push event
