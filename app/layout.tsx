@@ -4,13 +4,11 @@ import { SessionProvider } from "next-auth/react";
 import { auth } from "@/lib/auth";
 import { Toaster } from "@/components/ui/sonner";
 export default async function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
-  const session = await auth();
 
   return (
     <html lang="en">
       <body className="bg-background text-foreground font-sans">
-        <SessionProvider session={session} refetchInterval={0}             // no polling
-          refetchOnWindowFocus={false} >
+   
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -19,7 +17,7 @@ export default async function RootLayout({ children, }: Readonly<{ children: Rea
           >
             {children}
           </ThemeProvider>
-        </SessionProvider>
+  
         <Toaster />
       </body>
     </html>

@@ -11,7 +11,7 @@ import clsx from "clsx"
 /// needs a new way to check if contributed to repo and open issues/pr
 export default function RepoCard({ repo }: { repo: GitHubRepo }) {
     const [hovered, setHovered] = useState(false)
-    const primaryLang = repo.languages[0] ?? ""
+    const primaryLang = repo.language || "unknown"
     const langColor = LANGUAGE_COLORS[primaryLang] ?? "#8b949e"
 
     return (
@@ -30,12 +30,12 @@ export default function RepoCard({ repo }: { repo: GitHubRepo }) {
                 hovered ? "opacity-0" : "opacity-100"
             )}>
                 <div className="flex items-start justify-between gap-1">
-                    <span className="font-mono text-4xl font-semibold text-foreground  line-clamp-1">
+                    <span className="font-mono text-4xl font-semibold text-foreground  ">
                         {repo.name}
                     </span>
                     {repo.owner && (
                         <span className="flex align-text text-1xl text-muted-foreground font-mono">
-                            {repo.owner}
+                            {repo.owner.login}
                         </span>
                     )}
 
@@ -48,22 +48,19 @@ export default function RepoCard({ repo }: { repo: GitHubRepo }) {
                 )}
 
                 <div className="flex flex-wrap gap-1">
-                    {repo.languages.slice(0, 2).map(lang => (
-                        <div key={lang} className="flex items-center gap-1">
+                    {repo.language && (
+                        <div key={repo.language} className="flex items-center gap-1">
                             <div
                                 className="w-1.5 h-1.5 rounded-full"
-                                style={{ background: LANGUAGE_COLORS[lang] ?? "#8b949e" }}
+                                style={{ background: LANGUAGE_COLORS[repo.language] ?? "#8b949e" }}
                             />
                             <span className="text-1xl text-muted-foreground font-mono">
-                                {lang}
+                                {repo.language}
                             </span>
                         </div>
-                    ))}
-                    {repo.languages.length > 2 && (
-                        <span className="text-2xl text-muted-foreground">
-                            +{repo.languages.length - 2}
-                        </span>
                     )}
+
+                   
 
 
                 </div>
@@ -85,13 +82,13 @@ export default function RepoCard({ repo }: { repo: GitHubRepo }) {
                     <div className="flex flex-col items-center gap-0.5">
                         <CircleDot className="w-3.5 h-3.5 text-green-400" />
                         <span className="font-mono text-[10px] font-semibold">
-                            {repo.issues_count ?? 0}
+                            {repo.has_issues ? "Yes" : "No"}
                         </span>
                     </div>
                     <div className="flex flex-col items-center gap-0.5">
                         <GitPullRequest className="w-3.5 h-3.5 text-purple-400" />
                         <span className="font-mono text-[10px] font-semibold">
-                            {repo.pr_count ?? 0}
+                            {repo.forks_count ?? 0}
                         </span>
                     </div>
                     {repo.fork && (
