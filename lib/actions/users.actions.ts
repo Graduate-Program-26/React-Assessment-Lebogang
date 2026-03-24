@@ -58,6 +58,7 @@ export async function discoverUsers() {
         return data;
     } catch (error) {
         console.error(error)
+        return [];
     }
 }
 

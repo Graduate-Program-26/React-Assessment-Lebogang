@@ -9,7 +9,6 @@ import {
 
 import { useEffect, useState } from "react";
 import {discoverUsers} from "@/lib/actions/users.actions";
-
 import { Skeleton } from "@/components/ui/skeleton";
 export default function StoriesRow() {
     const [loading, setLoading] = useState(true);
