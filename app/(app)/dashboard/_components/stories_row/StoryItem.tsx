@@ -1,4 +1,12 @@
 import clsx from "clsx";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
 export interface StoryItemProp {
     avatar_url: string;
     username: string;
@@ -9,7 +17,7 @@ export interface StoryItemProp {
     is_active?: boolean;  // has pushed code in last 24h
 }
 
-
+import { StoriesPopup } from "./StoriesPopup";
 export default function StoryItem({ data }: { data: StoryItemProp }) {
     const ringClass = {
         self: "bg-gradient-to-tr from-blue-400 to-green-400",
@@ -25,19 +33,26 @@ export default function StoryItem({ data }: { data: StoryItemProp }) {
 
     // variant used to map the gradient colors to the story item based on the user status, done in this manner for cleaner code using clsx conditionals 
     return (
-        <a className="flex flex-col items-center space-y-2">
-            <div className={clsx("p-[2.5px] rounded-full", variant)} >
-                <div className="bg-background p-2 rounded-full">
-                    <img
-                        src={data.avatar_url}
-                        alt={data.username}
-                        className="w-14 h-14 rounded-full object-cover"
-                    />
+        <Dialog>
+            <DialogTrigger asChild>
+                <div  className="flex flex-col items-center space-y-2">
+                <div className={clsx("p-[2.5px] rounded-full", variant)} >
+                    <div className="bg-background p-2 rounded-full">
+                        <img
+                            src={data.avatar_url}
+                            alt={data.username}
+                            className="w-14 h-14 rounded-full object-cover"
+                        />
+                    </div>
                 </div>
-            </div>
-            <p className="text-xs text-muted-foreground truncate max-w-16 text-center">
-                {data.username}
-            </p>
-        </a>
+                <p className="text-xs text-muted-foreground truncate max-w-16 text-center">
+                    {data.username}
+                </p>
+                </div>
+            </DialogTrigger>
+
+            <StoriesPopup userData={data} />
+        </Dialog>
+
     )
 }

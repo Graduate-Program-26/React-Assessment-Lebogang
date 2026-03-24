@@ -10,7 +10,7 @@ const publicRoutes = ['/login', '/logout', '/']
 
 export const authConfig = {
     pages: {
-        signIn: '/login',
+        signIn: '/',
         signOut: '/logout'
     },
     secret: process.env.BETTER_AUTH_SECRET,
@@ -25,7 +25,11 @@ export const authConfig = {
         authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
             const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
+            const isOnExplore = nextUrl.pathname.startsWith('/explore');
             if (isOnDashboard) {
+                if (isLoggedIn) return true;
+                return false; // Redirect unauthenticated users to login page
+            } else if (isOnExplore) {
                 if (isLoggedIn) return true;
                 return false; // Redirect unauthenticated users to login page
             } else if (isLoggedIn) {

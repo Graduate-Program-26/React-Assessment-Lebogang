@@ -12,6 +12,7 @@ export default function ContributionCalender({ username }: { username: string })
                 blockMargin={3}
                 fontSize={14}
                 colorScheme={resolvedTheme === "dark" ? "dark" : "light"}
+                errorMessage='Unable to get Contribution calender :('
             />
         </div>
     )

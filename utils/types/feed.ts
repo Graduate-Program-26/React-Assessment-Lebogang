@@ -1,6 +1,6 @@
 
 // only accept these types of events for simplicty
-export type EventType = "PushEvent" | "PullRequestEvent" | "WatchEvent" | "ForkEvent"
+export type EventType = "PushEvent" | "PullRequestEvent" | "WatchEvent" | "ForkEvent" | "PullRequestReviewEvent" | "CreateEvent"
 
 interface BaseEvent {
     id: string
@@ -16,11 +16,33 @@ interface BaseEvent {
 }
 
 export interface PushEvent extends BaseEvent {
-    type: "PushEvent"
+    type: "PushEvent",
+    commits: {
+            sha: string;
+            author: {
+                email: string;
+                name: string;
+            };
+            commit: {
+                author: {
+                    name: string;
+                    email: string;
+                };
+                message: string;
+                url: string;
+            };
+            distinct: boolean;
+            url: string;
+        }[];
     payload: {
-        commits: { message: string; sha: string }[]
-        ref: string    // "refs/heads/main"
-    }
+        push_id: number;
+        size: number;
+        distinct_size: number;
+        ref: string; 
+        head: string;
+        before: string;
+        
+    };
 }
 
 export interface PullRequestEvent extends BaseEvent {
@@ -47,4 +69,27 @@ export interface ForkEvent extends BaseEvent {
     }
 }
 
-export type FeedEvent = PushEvent | PullRequestEvent | WatchEvent | ForkEvent
+export type PullRequestReviewEvent = BaseEvent & {
+    type: "PullRequestReviewEvent",
+    repo: {
+    name: string
+    },
+    payload: {
+        action: "submitted" | "edited" | "dismissed"
+        review: {
+            state: "approved" | "request_changes" | "comment"
+        }
+    }
+}
+
+export type CreateEvent = BaseEvent & {
+    type: "CreateEvent",
+    repo: {
+    name: string
+    },
+    payload: {
+        ref_type: "repository" | "branch" | "tag"
+        ref: string | null
+    }
+}
+export type FeedEvent = PushEvent | PullRequestEvent | WatchEvent | ForkEvent | PullRequestReviewEvent | CreateEvent
