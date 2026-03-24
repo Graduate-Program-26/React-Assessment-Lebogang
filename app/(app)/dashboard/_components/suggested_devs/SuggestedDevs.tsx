@@ -15,7 +15,6 @@ export default function SuggestedDevs() {
     useEffect(() => {
         const loadSuggestions = async () => {
             const data = await suggestUsers(7);
-            console.log("Suggested users:", data);
             setSuggestions(data as SuggestedDevProp[]);
         };
         loadSuggestions();

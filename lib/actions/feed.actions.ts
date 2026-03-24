@@ -32,11 +32,11 @@ export async function fetchUserPublicFeed(username: string, per_page = 20) {
 
 import { searchRepos } from './explore.actions';
 import { fetchUserEvents } from './users.actions';
-export async function getTrendingFeed() {
+export async function getTrendingFeed(per_page = 20, pageParam = 1) {
     try {
         const [repos, events] = await Promise.all([
-            searchRepos('stars:>10000', { sort: 'stars', per_page: 10 }),
-            fetchUserEvents({ username: undefined, per_page: 10 })
+            searchRepos('stars:>10000', { sort: 'stars', per_page: per_page ,pageParam}),
+            fetchUserEvents({ username: undefined, per_page: per_page, pageParam })
         ]); 
         
         return { repos, events };

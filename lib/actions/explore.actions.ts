@@ -1,8 +1,8 @@
 import { GitHubUser, GitHubRepo } from "@/utils/types/types";
 
-export async function searchRepos(query: string, options?: { language?: string, sort?: 'stars' | 'updated', per_page?: number }): Promise<GitHubRepo[]> {
+export async function searchRepos(query: string, options?: { language?: string, sort?: 'stars' | 'updated', per_page?: number, pageParam?: number }): Promise<GitHubRepo[]> {
     try {
-        const response = await fetch(`https://api.github.com/search/repositories?q=${query}${options?.language ? `+language:${options.language}` : ''}&sort=${options?.sort || 'stars'}&per_page=${options?.per_page || 10}`);
+        const response = await fetch(`https://api.github.com/search/repositories?q=${query}${options?.language ? `+language:${options.language}` : ''}&sort=${options?.sort || 'stars'}&per_page=${options?.per_page || 10}&page=${options?.pageParam || 1}`);
 
         const data = await response.json();
         return data.items;
