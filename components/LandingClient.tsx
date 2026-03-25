@@ -7,6 +7,7 @@ import { signIn } from "next-auth/react"
 import { GitGraph } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { GlobeDemo } from "@/components/shared/GitGlobe"
+import { Suspense } from "react"
 
 export default function LandingClient() {
     return (
@@ -33,7 +34,9 @@ export default function LandingClient() {
 
           
                 <div className="w-full h-64 mt-6">
+                    <Suspense>
                     <GlobeDemo />
+                    </Suspense>
                 </div>
             </main>
 
