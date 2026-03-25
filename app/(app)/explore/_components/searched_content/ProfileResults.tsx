@@ -35,7 +35,7 @@ export default function ProfileResults({query} : {query: string}) { // would be 
             
             <div className="grid grid-cols-3 gap-4">
                 {profiles.map(profile => (
-                    <ProfileCard key={profile.id} data={profile} />
+                    <ProfileCard key={profile.url} data={profile} />
                 ))}
             </div>
         </div>

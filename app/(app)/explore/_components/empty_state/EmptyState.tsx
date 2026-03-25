@@ -1,6 +1,7 @@
 
 import { Search } from "lucide-react"
 import {GlobeDemo} from "@/components/shared/GitGlobe"
+import { Suspense } from "react"
 interface EmptyStateProps {
     hasQuery: boolean    // true = searched but no results, false = no search yet
 }
@@ -27,7 +28,9 @@ export default function EmptyState({ hasQuery }: EmptyStateProps) {
                     </p>
 
                     <div className="w-full h-64 mt-6">
+                        <Suspense>
                         <GlobeDemo />
+                        </Suspense>
                     </div>
                 </>
             )}

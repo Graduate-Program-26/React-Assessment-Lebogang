@@ -45,3 +45,4 @@ export async function getTrendingFeed(per_page = 20, pageParam = 1) {
         return { repos: [], events: [] };
     }
 }
+

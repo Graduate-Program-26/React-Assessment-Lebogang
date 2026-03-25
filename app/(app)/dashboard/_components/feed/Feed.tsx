@@ -10,6 +10,8 @@ import { useMemo, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { ActivityFeedSkeleton } from "@/app/(app)/profile/_components/ProfileSkeletons";
 import { Spinner } from "@/components/ui/spinner"
+import { nanoid } from 'nanoid'
+
 
 export default function Feed() {
     const { ref, inView } = useInView();
@@ -54,9 +56,14 @@ export default function Feed() {
         const combined = [...allRepos, ...(allEvents || [])];
         // Sort by created_at date, newest first
         combined.sort((a, b) => {
-            const dateA = new Date('created_at' in a ? a.created_at : a.created_at).getTime(); // just works ..... 
-            const dateB = new Date('created_at' in b ? b.created_at : b.created_at).getTime();
-            return dateB - dateA;
+            const getTime = (obj: any) => {
+                // If it has created_at, use it. 
+                // If not (it's a Repo), use a fallback like 'pushed_at' or 'now'
+                const dateStr = 'created_at' in obj ? obj.created_at : (obj.pushed_at || new Date().toISOString());
+                return new Date(dateStr).getTime();
+            };
+
+            return getTime(b) - getTime(a);
         });
         return combined;
     }, [feedItems]);
@@ -83,16 +90,16 @@ export default function Feed() {
             {combinedFeed.map((item) => {
                 if (item.feedType === 'repo') {
                     const repo = item as GitHubRepo;
-                    return <RepoCard key={repo.name} repo={repo} />
+                    return <RepoCard key={repo.id + nanoid()} repo={repo} />
                 } else {
                     const event = item as FeedEvent;
-                    return <FeedItem key={event.id} data={event} />
+                    return <FeedItem key={event.id + nanoid()} data={event} />
                 }
             })}
 
             <div ref={ref} className="py-10 flex justify-center">
                 {isFetchingNextPage ? (
-                    <Spinner  className="size-8"/>
+                    <Spinner className="size-8" />
                 ) : hasNextPage ? (
                     <span className="text-xs opacity-20 uppercase tracking-widest">Scroll for more</span>
                 ) : (

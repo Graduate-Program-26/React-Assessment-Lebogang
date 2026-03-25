@@ -38,10 +38,6 @@ export interface GitHubUser {
   created_at: string;
   updated_at: string;
 }
-export interface GitHubEvent {
-  // this is mad :()
-}
-
 
 
 export interface GitHubRepo {
@@ -84,3 +80,4 @@ export interface GitHubRepo {
     homepage: string | null
     default_branch: string
 }
+
