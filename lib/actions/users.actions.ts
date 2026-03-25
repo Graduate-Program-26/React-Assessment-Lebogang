@@ -33,22 +33,7 @@ export async function fetchUsers(username: string): Promise<GitHubUser | undefin
     }
 }
 
-export async function fetchUserInfo() {
-    const session = await auth();
-    const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
 
-    try {
-        const response = await fetch(`https://api.github.com/user`, {
-            headers: {
-                Authorization: `token ${token}`,
-            },
-        });
-
-        return response.json();
-    } catch (error) {
-        console.error(error);
-    }
-}
 
 export async function discoverUsers(per_page: number = 20) {
     const session = await auth();
@@ -78,46 +63,6 @@ export async function discoverUsers(per_page: number = 20) {
 }
 
 
-
-// fetch user followers from github
-export async function fetchUserFollowers(username: string) {
-    try {
-        const response = await fetch(`https://api.github.com/users/${username}/followers`);
-
-        return response.json();
-    } catch (error) {
-        console.error(error)
-    }
-}
-// fetch user following from github
-export async function fetchUserFollowing(username: string) {
-    try {
-        const response = await fetch(`https://api.github.com/users/${username}/following`);
-
-        return response.json();
-    } catch (error) {
-        console.error(error)
-    }
-}
-
-
-export async function fetchIsFollowing(username: string, target_user: string) {
-    try {
-        const response = await fetch(`https://api.github.com/users/${username}/following/${target_user}`);
-        const data = response.json();
-        console.log(data);
-        const isFollowing = true; // coerce the type gang
-
-        /*
-        if the user follows the target user
-        Status: 204 
-        
-        else 404*/
-        return isFollowing;
-    } catch (error) {
-        console.error(error);
-    }
-}
 
 export async function fetchUserEvents({username,
   pageParam = 1, 

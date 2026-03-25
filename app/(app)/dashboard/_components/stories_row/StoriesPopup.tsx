@@ -12,7 +12,6 @@ import { StoryItemProp } from "./StoryItem"
 import Stories, { WithSeeMore } from "react-insta-stories";
 import { Story } from "react-insta-stories/dist/interfaces";
 import { fetchLastSixCommits } from "@/lib/actions/explore.actions";
-import { useState, useEffect } from "react"
 import { Spinner } from "@/components/ui/spinner";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";

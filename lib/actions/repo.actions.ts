@@ -59,38 +59,7 @@ export async function fetchUserRepos(username: string, options?: { sort?: 'updat
     }
 }
       
-export async function fetchRepoLanguages(owner: string, repo: string){
-    const session = await auth();
-    const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
 
-     try {
-        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/languages`, {
-            headers: {
-                Authorization: `token ${token}`,
-            },
-        });
-
-        return response.json();
-    } catch (error) {
-        console.error(error)
-    }
-}
-export async function fetchRepoTopics(owner: string, repo: string) {
-const session = await auth();
-    const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
-
-     try {
-        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/topics`, {
-            headers: {
-                Authorization: `token ${token}`,
-            },
-        });
-
-        return response.json();
-    } catch (error) {
-        console.error(error)
-    }
-}
 
 
 
