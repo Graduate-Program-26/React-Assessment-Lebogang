@@ -5,7 +5,7 @@ import { Field } from '@/components/ui/field'
 import {useDebounce} from "use-debounce"
 import { useState, useEffect } from 'react'
 export default function SearchBar(values: {value: string, onChange: (value: string) => void, placeholder?: string}) {
-    const [query] = useDebounce(values.value, 500);
+    const [query] = useDebounce(values.value, 1500);
     const [text, setText] = useState(values.value)
 
     useEffect(() => {

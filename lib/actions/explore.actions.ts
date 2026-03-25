@@ -1,8 +1,19 @@
+"use server"
 import { GitHubUser, GitHubRepo } from "@/utils/types/types";
+import {auth} from "@/lib/auth"
+import { discoverUsers } from "@/lib/actions/users.actions";
+import {type SuggestedDevProp} from "@/app/(app)/dashboard/_components/suggested_devs/SuggestedDev";
 
 export async function searchRepos(query: string, options?: { language?: string, sort?: 'stars' | 'updated', per_page?: number, pageParam?: number }): Promise<GitHubRepo[]> {
+    const session = await auth();
+    const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
+
     try {
-        const response = await fetch(`https://api.github.com/search/repositories?q=${query}${options?.language ? `+language:${options.language}` : ''}&sort=${options?.sort || 'stars'}&per_page=${options?.per_page || 10}&page=${options?.pageParam || 1}`);
+        const response = await fetch(`https://api.github.com/search/repositories?q=${query}${options?.language ? `+language:${options.language}` : ''}&sort=${options?.sort || 'stars'}&per_page=${options?.per_page || 10}&page=${options?.pageParam || 1}`, {
+            headers: {
+                Authorization: `token ${token}`,
+            },
+        });
 
         const data = await response.json();
         return data.items;
@@ -12,8 +23,14 @@ export async function searchRepos(query: string, options?: { language?: string, 
     }
 }
 export async function searchUsers(query: string, per_page?: number): Promise<GitHubUser[]> {
+    const session = await auth();
+    const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string    
     try {
-        const response = await fetch(`https://api.github.com/search/users?q=${query}&per_page=${per_page || 10}`);
+        const response = await fetch(`https://api.github.com/search/users?q=${query}&per_page=${per_page || 10}`, {
+            headers: {
+                Authorization: `token ${token}`,
+            },
+        });
 
         const data = await response.json();
         return data.items;
@@ -32,8 +49,6 @@ export async function fetchReposByLanguage(language: string, sort?: 'stars' | 'u
 export async function fetchTrendingRepos(language?: string, since?: 'daily' | 'weekly' | 'monthly') {
 }
 
-import { discoverUsers } from "@/lib/actions/users.actions";
-import {type SuggestedDevProp} from "@/app/(app)/dashboard/_components/suggested_devs/SuggestedDev";
 export async function suggestUsers(per_page?: number) {
     try {
         const response = await discoverUsers(per_page);
