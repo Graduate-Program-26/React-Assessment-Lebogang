@@ -10,6 +10,7 @@ import { useMemo, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { ActivityFeedSkeleton } from "@/app/(app)/profile/_components/ProfileSkeletons";
 import { Spinner } from "@/components/ui/spinner"
+import { nanoid } from 'nanoid'
 
 export default function Feed() {
     const { ref, inView } = useInView();
@@ -86,7 +87,7 @@ export default function Feed() {
                     return <RepoCard key={repo.name} repo={repo} />
                 } else {
                     const event = item as FeedEvent;
-                    return <FeedItem key={event.id} data={event} />
+                    return <FeedItem key={event.id + nanoid()} data={event} />
                 }
             })}
 
