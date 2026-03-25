@@ -84,3 +84,11 @@ export interface GitHubRepo {
     homepage: string | null
     default_branch: string
 }
+
+export interface StoryData {
+  content: () => {
+     // JSX body of story
+
+  }
+}
+

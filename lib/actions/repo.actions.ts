@@ -3,11 +3,11 @@ import { auth } from '@/lib/auth';
 import { GitHubRepo } from '@/utils/types/types';
 
  // fetch user repositories from github
-export async function fetchRepos(username: string): Promise<GitHubRepo[] | undefined> { 
+export async function fetchRepos(username: string, per_page?: number): Promise<GitHubRepo[] | undefined> { 
     const session = await auth();
     const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
     try {
-        const response = await fetch(`https://api.github.com/users/${username}/repos`, {
+        const response = await fetch(`https://api.github.com/users/${username}/repos?per_page=${per_page}`, {
             headers: {
                 Authorization: `token ${token}`,
             },

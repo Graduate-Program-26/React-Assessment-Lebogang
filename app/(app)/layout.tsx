@@ -1,27 +1,20 @@
-
+"use server"
 import { redirect } from "next/navigation"
 import { auth } from "@/lib/auth"
 import AppProviders from "@/components/Providers"
 import SideBar from "@/components/naviagtion/SideBar"
 import BottomBar from  "@/components/naviagtion/BottomBar"
+import { Suspense } from "react"
+export default async  function AppLayout({ children }: { children: React.ReactNode }) {
 
-export default async function AppLayout({ children }: { children: React.ReactNode }) {
-    const session = await auth()
-
-    if (!session) redirect("/")
-
-    const user = {
-        name: session.user?.name ?? "",
-        username: session.user?.username ?? "",
-        image: session.user?.image ?? "",
-        accessToken: session.accessToken,
-    }
 
     return (
         <AppProviders>
             <div className="flex min-h-screen w-full">
                 <aside className="hidden md:flex">
-                    <SideBar user={user} />
+                    <Suspense>
+                    <SideBar />
+                    </Suspense>
                 </aside>
 
                 <div className="flex flex-1 flex-col">

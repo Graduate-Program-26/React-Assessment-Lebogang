@@ -51,7 +51,7 @@ export default function StoryItem({ data }: { data: StoryItemProp }) {
                 </div>
             </DialogTrigger>
 
-            <StoriesPopup userData={data} />
+           
         </Dialog>
 
     )

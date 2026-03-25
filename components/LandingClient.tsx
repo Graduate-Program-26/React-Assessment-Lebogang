@@ -15,7 +15,7 @@ export default function LandingClient() {
 
                 <div className="flex flex-col items-center gap-3">
                     <h1 className="font-mono text-5xl font-bold tracking-tight">
-                        Git<span className="text-blue-500">.</span>gram
+                        Git<span className="text-blue-500">.</span>stagram
                     </h1>
                     <p className="max-w-md text-muted-foreground">
                         GitHub as a social feed. Follow developers, watch repos, and track activity — the way it should feel.
@@ -31,12 +31,7 @@ export default function LandingClient() {
                     Connect with GitHub
                 </Button>
 
-                <div className="flex items-center gap-3 w-full max-w-sm">
-                    <div className="flex-1 h-px bg-border" />
-                    <span className="text-xs text-muted-foreground">or explore without an account</span>
-                    <div className="flex-1 h-px bg-border" />
-                </div>
-
+          
                 <div className="w-full h-64 mt-6">
                     <GlobeDemo />
                 </div>
