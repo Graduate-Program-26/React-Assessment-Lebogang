@@ -14,39 +14,50 @@ import { Story } from "react-insta-stories/dist/interfaces";
 import { fetchLastSixCommits } from "@/lib/actions/explore.actions";
 import { useState, useEffect } from "react"
 import { Spinner } from "@/components/ui/spinner";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
+
 // Uses a Render Props pattern. Instead of just passing a static image or string, you are passing a function that returns JSX.
 export function StoriesPopup({ userData }: { userData: StoryItemProp }) {
-    const [stories, setStories] = useState<Story[]>([])
-    const userName = userData.username;
-    useEffect(() => {
-        const storyData = async () => {
-            /*
-            const data = await fetchLastSixCommits(userName);
-            if (data) {
-                const formatted = data.map((story) => ({
-                    content: ({ action, isPaused }) => (
-                        <div className="h-full w-full bg-zinc-900 text-white p-8 flex flex-col justify-center border-x border-zinc-800">
-                            <span className="text-blue-400 font-mono text-xs mb-2">{story.repoName}</span>
-                            <h2 className="text-xl font-bold leading-tight">{story.commit.message}</h2>
-                            <div className="mt-8 pt-4 border-t border-white/10">
-                                <p className="text-zinc-500 text-xs">{new Date(story.created_at).toDateString()}</p>
-                            </div>
+    const { data: stories, isLoading } = useQuery({
+        queryKey: ['user-commits', userData.username],
+        queryFn: () => fetchLastSixCommits(userData.username),
+        staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+        select: (data) => {
+            if(!data) return [];
+
+            return data.map((story) => ({
+                content: ({ action, isPaused }: any) => (
+                    <div className="h-full w-full bg-zinc-950 text-white p-10 flex flex-col justify-center border-x border-zinc-900">
+                        <span className="text-blue-400 font-mono text-xs mb-3 tracking-tighter">
+                            {story.repoName}
+                        </span>
+                        <h2 className="text-2xl font-bold leading-tight tracking-tight">
+                            {story.commit?.message}
+                        </h2>
+                        <div className="mt-10 pt-4 border-t border-white/5">
+                            <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest">
+                                {new Date(story.created_at).toDateString()}
+                            </p>
                         </div>
-                    ),
-                    duration: 5000
-                }))
-
-                setStories(formatted);
-            }
-                */
+                    </div>
+                ),
+                duration: 5000,
+            }));
         }
-
-        storyData();
-
-    }, [userName])
+    });
 
     return (
         <DialogContent>
+            {!stories ||  isLoading ? (
+                <DialogTitle className="font-mono text-base">
+
+                <div className="aspect-9/16 flex items-center justify-center">
+                   <Skeleton />
+                </div>
+                </DialogTitle>
+            ) : (
+                <>
             <DialogHeader>
                 <DialogTitle className="font-mono text-base">
                     {userData.username}
@@ -60,7 +71,7 @@ export function StoriesPopup({ userData }: { userData: StoryItemProp }) {
             </DialogDescription>
 
             <div className="relative flex items-center justify-center w-full aspect-9/16 bg-zinc-950">
-                {stories.length > 0 ? (
+                {stories!.length > 0 ? (
                     <Stories
                         stories={stories}
                         defaultInterval={5000}
@@ -75,7 +86,8 @@ export function StoriesPopup({ userData }: { userData: StoryItemProp }) {
                     </div>
                 )}
             </div>
-
+            </>
+            )}
         </DialogContent>
     )
 }

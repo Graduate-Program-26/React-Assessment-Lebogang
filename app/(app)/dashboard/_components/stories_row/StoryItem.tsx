@@ -16,9 +16,11 @@ export interface StoryItemProp {
     is_self?: boolean;
     is_active?: boolean;  // has pushed code in last 24h
 }
-
+import { useState } from "react";
 import { StoriesPopup } from "./StoriesPopup";
 export default function StoryItem({ data }: { data: StoryItemProp }) {
+    const [isOpen, setIsOpen] = useState(false);
+    
     const ringClass = {
         self: "bg-gradient-to-tr from-blue-400 to-green-400",
         active: "bg-gradient-to-tr from-blue-500 via-purple-500 to-yellow-400",
@@ -33,25 +35,25 @@ export default function StoryItem({ data }: { data: StoryItemProp }) {
 
     // variant used to map the gradient colors to the story item based on the user status, done in this manner for cleaner code using clsx conditionals 
     return (
-        <Dialog>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <div  className="flex flex-col items-center space-y-2">
-                <div className={clsx("p-[2.5px] rounded-full", variant)} >
-                    <div className="bg-background p-2 rounded-full">
-                        <img
-                            src={data.avatar_url}
-                            alt={data.username}
-                            className="w-14 h-14 rounded-full object-cover"
-                        />
+                <div className="flex flex-col items-center space-y-2">
+                    <div className={clsx("p-[2.5px] rounded-full", variant)} >
+                        <div className="bg-background p-2 rounded-full">
+                            <img
+                                src={data.avatar_url}
+                                alt={data.username}
+                                className="w-14 h-14 rounded-full object-cover"
+                            />
+                        </div>
                     </div>
-                </div>
-                <p className="text-xs text-muted-foreground truncate max-w-16 text-center">
-                    {data.username}
-                </p>
+                    <p className="text-xs text-muted-foreground truncate max-w-16 text-center">
+                        {data.username}
+                    </p>
                 </div>
             </DialogTrigger>
 
-           
+           {isOpen && <StoriesPopup userData={data} />}
         </Dialog>
 
     )
