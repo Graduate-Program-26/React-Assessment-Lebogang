@@ -18,9 +18,10 @@ const BASE_LINKS = [
     { href: "/dashboard", label: "Feed",    icon: Home   },
     { href: "/explore",   label: "Explore", icon: Search },
 ]
+import { redirect } from "next/navigation"
 
-export default function SideBar({user}: {user: {name: string, image: string, username: string}}) {
-    const pathname = usePathname()
+export  default async function SideBar() {
+  
     const { setTheme, resolvedTheme } = useTheme();
 
     const handleThemeToggle = () => setTheme(resolvedTheme === "dark" ? "light" : "dark");
