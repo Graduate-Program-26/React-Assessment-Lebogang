@@ -23,7 +23,7 @@ export default function SuggestedDevs() {
     if(suggestions === undefined || suggestions.length === 0) {
         return (
             <div className="space-y-4">
-                <div>Suggested Devs</div>
+                <h2>Suggested Devs</h2>
                 <ItemGroup>
                     {Array.from({ length: 5 }).map((_, index) => (
                         <Skeleton key={index} className="w-full h-16 rounded-md" />
@@ -35,8 +35,7 @@ export default function SuggestedDevs() {
 
     return (
         <div className="space-y-4">
-            <div>Suggested Devs</div>
-
+            <h2>Suggested Devs</h2>
             <ItemGroup>
                 {suggestions.map((dev) => (
                     <SuggestedDev key={dev.username} data={dev} />

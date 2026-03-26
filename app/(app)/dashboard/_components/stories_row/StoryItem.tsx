@@ -15,6 +15,8 @@ export interface StoryItemProp {
 }
 import { useState } from "react";
 import { StoriesPopup } from "./StoriesPopup";
+import Image from "next/image";
+
 export default function StoryItem({ data }: { data: StoryItemProp }) {
     const [isOpen, setIsOpen] = useState(false);
     
@@ -37,9 +39,9 @@ export default function StoryItem({ data }: { data: StoryItemProp }) {
                 <div className="flex flex-col items-center space-y-2">
                     <div className={clsx("p-[2.5px] rounded-full", variant)} >
                         <div className="bg-background p-2 rounded-full">
-                            <img
+                            <Image
                                 src={data.avatar_url}
-                                alt={data.username}
+                                alt={data.username + "'s profile picture"}
                                 className="w-14 h-14 rounded-full object-cover"
                             />
                         </div>

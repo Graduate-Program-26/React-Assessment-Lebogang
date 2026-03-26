@@ -9,12 +9,12 @@ import {
    
 } from "@/components/ui/dialog"
 import { StoryItemProp } from "./StoryItem"
-import Stories, { WithSeeMore } from "react-insta-stories";
-import { Story } from "react-insta-stories/dist/interfaces";
+const Stories = dynamic(() => import('react-insta-stories'), { ssr: false });
 import { fetchLastSixCommits } from "@/lib/actions/explore.actions";
 import { Spinner } from "@/components/ui/spinner";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
+import dynamic from "next/dynamic";
 
 // Uses a Render Props pattern. Instead of just passing a static image or string, you are passing a function that returns JSX.
 export function StoriesPopup({ userData }: { userData: StoryItemProp }) {

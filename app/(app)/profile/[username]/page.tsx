@@ -9,6 +9,7 @@ import ActivityFeed from "../_components/ActivityFeed"
 import Loading from "./loading"
 import { Suspense } from "react"
 
+
 export default function ProfilePage() {
 
     return (
