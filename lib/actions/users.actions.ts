@@ -1,11 +1,10 @@
 "use server"
 import {  auth } from '@/lib/auth'
 import { GitHubUser } from '@/utils/types/types'
-import { cacheLife } from 'next/cache';
 import { FeedEvent } from '@/utils/types/feed';
 
 import {fetchRepoCommits} from './repo.actions';
-// fetch user data from github (unauthed)
+
 export async function fetchUsers(username: string): Promise<GitHubUser | undefined> {
     try {
         'use cache';
@@ -43,19 +42,25 @@ export async function discoverUsers(per_page: number = 20) {
           headers: {
                 Authorization: `token ${token}`,
             },
+            next: {
+                revalidate: 86400
+            }
         });
 
-        const users =  await response.json(); // get usernames
-        const userArr = [];
-        for(const user of users) {
-            userArr.push( await fetchUsers(user.login));
-        }
+        const users: { login: string }[] = await response.json()
+        const profiles = await Promise.all(
+            users.map(user =>
+                fetch(`https://api.github.com/users/${user.login}`, {
+                    headers: { Authorization: `token ${token}` },
+                    next: { revalidate: 3600 },     // 1h 
+                }).then(res => res.json())
+            )
+        )
 
-        // get only a few (pagination)
-        if(userArr === undefined) {
+        if(profiles === undefined) {
             return [];
         }
-        return userArr;
+        return profiles;
     } catch (error) {
         console.error(error)
         return [];
@@ -83,7 +88,7 @@ export async function fetchUserEvents({username,
             headers: {
                 Authorization: `token ${token}`,
             },
-            next: { revalidate: username ? 0 : 60 } 
+            next: { revalidate: username ? 0 : 120 } 
         });
         if (!response.ok) throw new Error("Failed to fetch events");
 

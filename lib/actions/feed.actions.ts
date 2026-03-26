@@ -1,7 +1,10 @@
-
-
 import { auth } from '@/lib/auth'
 import { FeedEvent, EventType } from '@/utils/types/feed'
+
+
+import { searchRepos } from './explore.actions';
+import { fetchUserEvents } from './users.actions';
+const SUPPORTED_EVENTS: EventType[] = ["PushEvent", "PullRequestEvent", "WatchEvent", "ForkEvent"]
 
 
 export async function fetchAuthenticatedUserFeed(per_page?: number) {
@@ -21,7 +24,6 @@ export async function fetchAuthenticatedUserFeed(per_page?: number) {
     }
 }
 
-const SUPPORTED_EVENTS: EventType[] = ["PushEvent", "PullRequestEvent", "WatchEvent", "ForkEvent"]
 
 export async function fetchUserPublicFeed(username: string, per_page = 20) {
     const res = await fetch(`https://api.github.com/users/${username}/events/public/?per_page=${per_page}`)
@@ -30,8 +32,7 @@ export async function fetchUserPublicFeed(username: string, per_page = 20) {
     return data.filter((event: any) => SUPPORTED_EVENTS.includes(event.type)) as FeedEvent[]
 }
 
-import { searchRepos } from './explore.actions';
-import { fetchUserEvents } from './users.actions';
+
 export async function getTrendingFeed(per_page = 20, pageParam = 1) {
     try {
         const [repos, events] = await Promise.all([
