@@ -24,6 +24,7 @@ export default function Feed() {
     } = useInfiniteQuery({
         queryKey: ["feed"],
         staleTime: 1000 * 60 * 15, // 15 minutes
+        gcTime: 1000 * 60 * 30,        // 30 min — keep in memory after unmount
         queryFn: ({ pageParam }) => getTrendingFeed(20, pageParam),
         initialPageParam: 1,
         getNextPageParam: (lastPage, allPages) => {
@@ -52,19 +53,16 @@ export default function Feed() {
         );
 
 
-        const combined = [...allRepos, ...(allEvents || [])];
         // Sort by created_at date, newest first
-        combined.sort((a, b) => {
-            const getTime = (obj: any) => {
-                // If it has created_at, use it. 
-                // If not (it's a Repo), use a fallback like 'pushed_at' or 'now'
-                const dateStr = 'created_at' in obj ? obj.created_at : (obj.pushed_at || new Date().toISOString());
-                return new Date(dateStr).getTime();
-            };
 
-            return getTime(b) - getTime(a);
-        });
-        return combined;
+        const combined = [...allRepos, ...allEvents].map((item: any) => ({
+            ...item,
+            _sortTime: new Date(
+                'created_at' in item ? item.created_at : (item ?? item.updated_at ?? "")
+            ).getTime()
+        }))
+
+        return combined.sort((a, b) => b._sortTime - a._sortTime)
     }, [feedItems]);
 
     // Fetch next page when inView becomes true
