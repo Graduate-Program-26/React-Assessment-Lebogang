@@ -46,7 +46,7 @@ export async function suggestUsers(per_page?: number) {
     try {
         const response = await discoverUsers(per_page);
 
-        const data: SuggestedDevProp[] = (response ?? []).filter((user): user is GitHubUser => !!user).map((user) => ({
+        const data: SuggestedDevProp[] = (response ?? []).filter((user: GitHubUser): user is GitHubUser => !!user).map((user: GitHubUser) => ({
             username: user.login,
             avatar_url: user.avatar_url,
             bio: user.bio ?? " ",

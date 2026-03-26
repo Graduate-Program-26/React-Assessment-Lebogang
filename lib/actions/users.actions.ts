@@ -38,7 +38,7 @@ export async function discoverUsers(per_page: number = 20) {
     const session = await auth();
     const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
     try {
-        const response = await fetch(`https://api.github.com/users?per_page=${per_page}`, {
+        const response = await fetch(`https://api.github.com/search/users?q=followers:>1000&sort=followers&per_page=${per_page}`, {
           headers: {
                 Authorization: `token ${token}`,
             },
@@ -47,23 +47,36 @@ export async function discoverUsers(per_page: number = 20) {
             }
         });
 
-        const users: { login: string }[] = await response.json()
+        const data = await response.json();
+        return data.items;
+
+    } catch (error) {
+        console.error(error)
+        return [];
+    }
+}
+
+// for full profiles for callers that need bio/updated_at
+export async function discoverUsersEnriched(per_page: number = 20): Promise<GitHubUser[]> {
+    const session = await auth()
+    const token = session?.accessToken || process.env.GITHUB_PAT
+
+    try {
+        const users = await discoverUsers(per_page)
+
         const profiles = await Promise.all(
-            users.map(user =>
+            users.map((user: { login: string }) =>
                 fetch(`https://api.github.com/users/${user.login}`, {
-                    headers: { Authorization: `token ${token}` },
-                    next: { revalidate: 3600 },     // 1h 
+                    headers: { Authorization: `Bearer ${token}` },
+                    next: { revalidate: 3600 },     // profiles cached 1h each
                 }).then(res => res.json())
             )
         )
 
-        if(profiles === undefined) {
-            return [];
-        }
         return profiles;
     } catch (error) {
-        console.error(error)
-        return [];
+        console.error("[discoverUsersEnriched]", error)
+        return []
     }
 }
 
