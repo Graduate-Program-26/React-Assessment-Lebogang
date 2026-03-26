@@ -42,7 +42,8 @@ export default function StoryItem({ data }: { data: StoryItemProp }) {
                             <Image
                                 src={data.avatar_url}
                                 alt={data.username + "'s profile picture"}
-                                className="w-14 h-14 rounded-full object-cover"
+                                width={56}
+                                height={56}
                             />
                         </div>
                     </div>
