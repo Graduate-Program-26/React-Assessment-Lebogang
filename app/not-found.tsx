@@ -13,13 +13,11 @@ export default function NotFound() {
             <div className="w-3 h-3 rounded-full bg-orange-500/50" />
             <div className="w-3 h-3 rounded-full bg-green-500/50" />
           </div>
+       
           <p className="text-red-500 mb-2 font-bold text-lg leading-none">
-            HTTP 404: RESOURCE_NOT_FOUND
+           404: RESOURCE_NOT_FOUND
           </p>
-          <p className="text-zinc-500 text-sm">
-            &gt; git checkout main <br/>
-            <span className="text-red-400">error: pathspec 'requested-page' did not match any file(s) known to git</span>
-          </p>
+        
         </div>
       </div>
 
@@ -28,20 +26,14 @@ export default function NotFound() {
       </h1>
       <p className="text-zinc-400 max-w-md mx-auto mb-8">
         The page you are looking for has been deleted, moved, or is currently private. 
-        Maybe try checking the status of the GitHub API?
+        My bad,
       </p>
 
       <div className="flex flex-col sm:flex-row gap-4 items-center">
         <Button asChild variant="default" className="gap-2">
           <Link href="/">
             <Home className="w-4 h-4" />
-            Back to Feed
-          </Link>
-        </Button>
-        <Button asChild variant="outline" className="gap-2 border-zinc-800 hover:bg-zinc-900">
-          <Link href="/explore">
-            <Search className="w-4 h-4" />
-            Search Users
+            Back to Home
           </Link>
         </Button>
       </div>

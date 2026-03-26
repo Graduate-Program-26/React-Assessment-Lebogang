@@ -75,7 +75,7 @@ export default function Feed() {
     if (status === "pending") {
         return (
             <div className="w-full space-y-4">
-                <h2 className="text-3xl font-bold">Trending Repositories & Recent Activity</h2>
+               <h1 className="text-3xl font-bold">Trending Repositories & Recent Activity</h1>
                 <ActivityFeedSkeleton length={12} />
             </div>
         )
@@ -83,7 +83,7 @@ export default function Feed() {
 
     return (
         <div className={cn("w-full", "space-y-4")}>
-            <h2 className="text-3xl font-bold">Trending Repositories & Recent Activity</h2>
+           <h1 className="text-3xl font-bold">Trending Repositories & Recent Activity</h1>
             {combinedFeed.map((item) => {
                 if (item.feedType === 'repo') {
                     const repo = item as GitHubRepo;

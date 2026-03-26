@@ -88,7 +88,7 @@ export default function SideBarClient({user}: {user: {name: string, image: strin
                         <SidebarMenuItem>
                             <SidebarMenuButton tooltip={user.name ?? ""}>
                                 <Avatar className="w-5 h-5">
-                                    <AvatarImage src={user.image ?? ""} />
+                                    <AvatarImage src={user.image ?? ""} alt={user.name ?? "user pfp"}/>
                                     <AvatarFallback className="text-[10px]">
                                         {user.name?.[0]}
                                     </AvatarFallback>

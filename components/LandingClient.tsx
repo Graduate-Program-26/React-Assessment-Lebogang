@@ -16,11 +16,13 @@ export default function LandingClient() {
 
                 <div className="flex flex-col items-center gap-3">
                     <h1 className="font-mono text-5xl font-bold tracking-tight">
-                        Git<span className="text-blue-500">.</span>stagram
+                        Git<span className="text-blue-500">.</span>stagram 
                     </h1>
+                    <section>
                     <p className="max-w-md text-muted-foreground">
                         GitHub as a social feed. Follow developers, watch repos, and track activity — the way it should feel.
                     </p>
+                    </section>
                 </div>
 
                 <Button
