@@ -32,7 +32,7 @@ export const authConfig = {
             } else if (isOnExplore) {
                 if (isLoggedIn) return true;
                 return false; // Redirect unauthenticated users to login page
-            } else if (isLoggedIn) {
+            } else if (isLoggedIn && nextUrl.pathname === '/') {
                 return Response.redirect(new URL('/dashboard', nextUrl));
             }
             return true;
