@@ -11,6 +11,10 @@ export async function fetchRepos(username: string, per_page?: number): Promise<G
             headers: {
                 Authorization: `token ${token}`,
             },
+            next: {
+                revalidate: 600 ,// 
+                tags:  ["repos" , username]
+            }
         });
 
         const data: GitHubRepo[] = await response.json();
@@ -32,6 +36,10 @@ export async function fetchRepo(owner: string, repo: string) {
             headers: {
                 Authorization: `token ${token}`,
             },
+            next : {
+                revalidate: 1200,
+                tags: [`repo-${owner}/${repo}`]
+            }
         });
         
         return response.json();
@@ -49,6 +57,10 @@ export async function fetchUserRepos(username: string, options?: { sort?: 'updat
             headers: {
                 Authorization: `token ${token}`,
             },
+            next: {
+                revalidate: 600,
+                tags: ["repos", username]
+            }
         });
 
         const data: GitHubRepo[] = await response.json();
@@ -75,6 +87,10 @@ export async function fetchRepoActivites(owner: string, repo : string, activity_
             headers: {
                 Authorization: `token ${token}`,
             },
+            next: {
+                revalidate: 600,
+                tags: [`repo-${owner}/${repo}-activity`]
+            }
         });
 
         return response.json();
@@ -94,6 +110,10 @@ export async function fetchRepoCommits(owner: string, repo: string) {
             headers: {
                 Authorization: `token ${token}`,
             },
+            next: {
+                revalidate: 600,
+                tags: [`repo-${owner}/${repo}-commits`]
+            }
         });
 
         return response.json();

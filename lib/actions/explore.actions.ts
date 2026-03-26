@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth"
 import { discoverUsers } from "@/lib/actions/users.actions";
 import { type SuggestedDevProp } from "@/app/(app)/dashboard/_components/suggested_devs/SuggestedDev";
 import { fetchRepos } from "./repo.actions";
+
 export async function searchRepos(query: string, options?: { language?: string, sort?: 'stars' | 'updated', per_page?: number, pageParam?: number }): Promise<GitHubRepo[]> {
     const session = await auth();
     const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
@@ -45,7 +46,7 @@ export async function suggestUsers(per_page?: number) {
     try {
         const response = await discoverUsers(per_page);
 
-        const data: SuggestedDevProp[] = (response ?? []).filter((user): user is GitHubUser => !!user).map((user) => ({
+        const data: SuggestedDevProp[] = (response ?? []).filter((user: GitHubUser): user is GitHubUser => !!user).map((user: GitHubUser) => ({
             username: user.login,
             avatar_url: user.avatar_url,
             bio: user.bio ?? " ",

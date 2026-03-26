@@ -1,11 +1,10 @@
 "use server"
 import {  auth } from '@/lib/auth'
 import { GitHubUser } from '@/utils/types/types'
-import { cacheLife } from 'next/cache';
 import { FeedEvent } from '@/utils/types/feed';
 
 import {fetchRepoCommits} from './repo.actions';
-// fetch user data from github (unauthed)
+
 export async function fetchUsers(username: string): Promise<GitHubUser | undefined> {
     try {
         'use cache';
@@ -39,26 +38,45 @@ export async function discoverUsers(per_page: number = 20) {
     const session = await auth();
     const token = session?.accessToken || process.env.GITHUB_PAT; // @TODO: check that it is not an empty string
     try {
-        const response = await fetch(`https://api.github.com/users?per_page=${per_page}`, {
+        const response = await fetch(`https://api.github.com/search/users?q=followers:>1000&sort=followers&per_page=${per_page}`, {
           headers: {
                 Authorization: `token ${token}`,
             },
+            next: {
+                revalidate: 86400
+            }
         });
 
-        const users =  await response.json(); // get usernames
-        const userArr = [];
-        for(const user of users) {
-            userArr.push( await fetchUsers(user.login));
-        }
+        const data = await response.json();
+        return data.items;
 
-        // get only a few (pagination)
-        if(userArr === undefined) {
-            return [];
-        }
-        return userArr;
     } catch (error) {
         console.error(error)
         return [];
+    }
+}
+
+// for full profiles for callers that need bio/updated_at
+export async function discoverUsersEnriched(per_page: number = 20): Promise<GitHubUser[]> {
+    const session = await auth()
+    const token = session?.accessToken || process.env.GITHUB_PAT
+
+    try {
+        const users = await discoverUsers(per_page)
+
+        const profiles = await Promise.all(
+            users.map((user: { login: string }) =>
+                fetch(`https://api.github.com/users/${user.login}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                    next: { revalidate: 3600 },     // profiles cached 1h each
+                }).then(res => res.json())
+            )
+        )
+
+        return profiles;
+    } catch (error) {
+        console.error("[discoverUsersEnriched]", error)
+        return []
     }
 }
 
@@ -83,7 +101,7 @@ export async function fetchUserEvents({username,
             headers: {
                 Authorization: `token ${token}`,
             },
-            next: { revalidate: username ? 0 : 60 } 
+            next: { revalidate: username ? 0 : 120 } 
         });
         if (!response.ok) throw new Error("Failed to fetch events");
 

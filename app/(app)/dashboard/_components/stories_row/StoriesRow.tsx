@@ -8,9 +8,11 @@ import {
 } from "@/components/ui/carousel"
 
 import { useEffect, useState } from "react";
-import { discoverUsers } from "@/lib/actions/users.actions";
+import { discoverUsers , discoverUsersEnriched} from "@/lib/actions/users.actions";
+
 import { Skeleton } from "@/components/ui/skeleton";
 import { GitHubUser } from "@/utils/types/types";
+
 export default function StoriesRow() {
     const [loading, setLoading] = useState(true);
     const [storiesData, setStoriesData] = useState<StoryItemProp[]>([]);
@@ -18,7 +20,7 @@ export default function StoriesRow() {
     useEffect(() => {
         const loadData = async () => {
             setLoading(true);
-            const data = await discoverUsers();
+            const data = await discoverUsersEnriched();
 
             if (data) {
                 const formattedData: StoryItemProp[] = (data ?? []).filter((user): user is GitHubUser => !!user).map((user) => ({

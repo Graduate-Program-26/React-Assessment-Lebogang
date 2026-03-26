@@ -4,10 +4,10 @@ import { Button } from '@/components/ui/button'
 import { Field } from '@/components/ui/field'
 import {useDebounce} from "use-debounce"
 import { useState, useEffect } from 'react'
-export default function SearchBar(values: {value: string, onChange: (value: string) => void, placeholder?: string}) {
-    const [query] = useDebounce(values.value, 500);
-    const [text, setText] = useState(values.value)
 
+export default function SearchBar(values: {value: string, onChange: (value: string) => void, placeholder?: string}) {
+    const [text, setText] = useState("");
+    const [query] = useDebounce(text, 700);
     useEffect(() => {
        // This prevents searching for empty strings on mount
         if (query !== undefined) {
