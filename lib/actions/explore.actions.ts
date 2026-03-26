@@ -14,6 +14,9 @@ export async function searchRepos(query: string, options?: { language?: string, 
             headers: {
                 Authorization: `token ${token}`,
             },
+            next: {
+                revalidate: 86400
+            }
         });
 
         const data = await response.json();
@@ -31,6 +34,9 @@ export async function searchUsers(query: string, per_page?: number): Promise<Git
             headers: {
                 Authorization: `token ${token}`,
             },
+            next: {
+                revalidate: 600 
+            }
         });
 
         const data = await response.json();
@@ -80,7 +86,7 @@ export async function fetchLastSixCommits(username: string) {
         const commitMessages = repos.map(async (repo) => {
             const response = await fetch(
                 `https://api.github.com/repos/${username}/${repo.name}/commits?per_page=6`,
-                { headers: { Authorization: `token ${token}` } }
+                { headers: { Authorization: `token ${token}` }, next: { revalidate: 600 } }
             );
 
             if (!response.ok) return [];

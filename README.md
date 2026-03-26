@@ -1,41 +1,74 @@
-# GitView: GitHub Personal Dashboard
+# Gitstagram
+> **Instagram for Developers.** Turn your daily GitHub commits into interactive, engaging social media platform.
 
-A high-performance dashboard built with **Next.js** that allows users to authenticate with GitHub to view their personal statistics, or explore any public profile via a dedicated demo mode.
+[![Vercel Deployment](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](gitstagram-phi.vercel.app
+)
+[![Next.js 15](https://img.shields.io/badge/Next.js-15-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org)
+[![Bun Runtime](https://img.shields.io/badge/Bun-1.1-f9f1e1?style=for-the-badge&logo=bun&logoColor=black)](https://bun.sh)
+
+---
 
 ## Features
 
-* **Secure GitHub OAuth:** Integrated via Auth.js for seamless, passwordless authentication.
-* **Protected Dashboard:** Middleware-guarded `/dashboard` route displaying authenticated user data.
-* **Dynamic Data Fetching:** Real-time retrieval of top repositories, star counts, and recent activity (commits, PRs, Issues).
-* **Public Demo Mode:** Shareable `/demo/[username]` routes that fetch public data without requiring a login.
-* **Contribution Visualization:** Zero-config embedding of the GitHub contribution calendar.
-* **Modern UI/UX:** Fully responsive design with **Tailwind CSS** and a system-aware **Dark Mode**.
+- **Commit Stories:** Transforms GitHub `PushEvents` into a familiar 9:16 vertical story format (experimental feature).
+- **Dynamic Trending Feed:** Discover other developers and see their latest activity in a horizontal scroll.
+- **GitHub OAuth:** Secure, one-click login using your GitHub profile.
+- **Responsive UI:** Optimized for both mobile "tapping" and desktop "clicking" experiences.
+- **Real-time API Integration:** Fetches fresh data directly from the GitHub REST API.
 
 ---
 
-## Technical Stack
+## Screenshots
 
-| Layer | Technology |
-| :--- | :--- |
-| **Framework** | Next.js|
-| **Authentication** | Auth.js|
-| **Styling** | Tailwind CSS + Shadcn |
-| **API** | GitHub REST API |
+
+| **Feed Overview** | **Explore PageView** | **User Profile** |
+| :---: | :---: | :---: |
+| <img src="public/Feed.png" width="300"> | <img src="public/FeedRepo.png" width="300"> | <img src="public/UserProfile.png" width="300"> |
+| <img src="public/StoryFeed.png" width="300"> | <img src="public/ExploreDevs.png" width="300"> | <img src="public/ProfileActivty.png" width="300"> |
 
 
 ---
 
-## Architecture & Implementation
+## Tech Stack
 
-### 1. The OAuth Flow
-The application uses the **Authorization Code Grant** flow. Upon clicking "Login," the user is redirected to GitHub to authorize the `read:user` scope. Auth.js handles the callback, exchanges the temporary code for an `access_token`, and encrypts the session into a secure, HTTP-only cookie.
+- **Core:** [Next.js 15 (App Router)](https://nextjs.org/)
+- **Runtime:** [Bun](https://bun.sh/)
+- **Auth:** [Auth.js (NextAuth v5)](https://authjs.dev/)
+- **Fetching:** [TanStack Query v5](https://tanstack.com/query/latest)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **Components:** [Shadcn/UI](https://ui.shadcn.com/) 
+- **Animation:** [React Insta Stories](https://github.com/mohitadwani/react-insta-stories)
+- **Icons:** [Lucide React](https://lucide.dev/)
 
-### 2. Route Protection
-We utilize Next.js Middleware to verify sessions at the edge:
+---
 
+## Documentation & References
+### Architetcure
+- **NextJS**: understanding project setup for a full stack application and the rules of the framework [docs](https://nextjs.org/docs)
 
-### 3. Data Fetching Strategy
-* **Authenticated:** Fetches are performed on the server-side using the user's OAuth token to benefit from higher rate limits.
-* **Demo Mode:** Public routes fetch data using a single server-side Personal Access Token (PAT) to prevent `403 Forbidden` errors from unauthenticated rate-limiting.
+### APIs & Auth
+- **GitHub REST API:** Used for fetching User Events, Repositories, and Commits.
+  - [Events API Reference](https://docs.github.com/en/rest)
+- **Auth.js (NextAuth):** Handling the OAuth2 flow with GitHub.
+  - [GitHub Provider Setup](https://authjs.dev/getting-started/providers/github)
 
+### Performance & Optimization
+- **Next.js Image:** Critical for optimizing remote GitHub avatars.
+  - [Remote Patterns Config](https://nextjs.org/docs/pages/api-reference/components/image)
+- **Lighthouse:** Guiding the SEO and Accessibility improvements.
+  - [Web Vitals Guide](https://web.dev/vitals/)
+- **Tanstack Query**: Used for `infinite query` and `use query` for effectively fetching data from the API.
+    - [docs](https://tanstack.com/query/latest/docs/framework/react/overview)
+
+### UI Components
+- **React Insta Stories:** The engine driving the vertical story transitions.
+  - [Package Documentation](https://www.npmjs.com/package/react-insta-stories)
+  - [CodeSandbox](https://codesandbox.io/examples/package/react-insta-stories)
+- **Tailwind CSS:** For the "Zinc/Dark" aesthetic inspired by GitHub's dark mode.
+- **ShadCN**: For component property options.
+- **Aceternity UI**: Used for 3D [Git Globe](https://ui.aceternity.com/components/github-globe)
+
+---
+## Lighthouse Metrics
+![Lighthouse Stats](public/Lighhouse.png)
 

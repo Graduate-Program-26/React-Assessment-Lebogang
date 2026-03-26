@@ -19,7 +19,7 @@ import Image from "next/image";
 
 export default function StoryItem({ data }: { data: StoryItemProp }) {
     const [isOpen, setIsOpen] = useState(false);
-    
+
     const ringClass = {
         self: "bg-gradient-to-tr from-blue-400 to-green-400",
         active: "bg-gradient-to-tr from-blue-500 via-purple-500 to-yellow-400",
@@ -38,14 +38,15 @@ export default function StoryItem({ data }: { data: StoryItemProp }) {
             <DialogTrigger asChild>
                 <div className="flex flex-col items-center space-y-2">
                     <div className={clsx("p-[2.5px] rounded-full", variant)} >
-                        <div className="bg-background p-2 rounded-full">
+                        <div className="relative w-14 h-14 p-2 overflow-hidden rounded-full">
                             <Image
                                 src={data.avatar_url}
-                                alt={data.username + "'s profile picture"}
-                                width={56}
-                                height={56}
+                                alt={`${data.username}'s profile picture`}
+                                fill={true}
+                                className="object-cover"
                             />
                         </div>
+
                     </div>
                     <p className="text-xs text-muted-foreground truncate max-w-16 text-center">
                         {data.username}
@@ -53,7 +54,7 @@ export default function StoryItem({ data }: { data: StoryItemProp }) {
                 </div>
             </DialogTrigger>
 
-           {isOpen && <StoriesPopup userData={data} />}
+            {isOpen && <StoriesPopup userData={data} />}
         </Dialog>
 
     )

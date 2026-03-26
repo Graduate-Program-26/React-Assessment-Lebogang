@@ -19,7 +19,15 @@ export default function AppProviders({ children }: { children: React.ReactNode }
     return (
         <QueryClientProvider client={queryClient}>
             <TooltipProvider>
-                <SidebarProvider>
+                <SidebarProvider
+                    style={
+                        {
+                            "--sidebar-width": "10rem",
+                            "--sidebar-width-mobile": "20rem",
+                        } as React.CSSProperties
+                    }
+                    defaultOpen={false}
+                >
                     {children}
                 </SidebarProvider>
             </TooltipProvider>

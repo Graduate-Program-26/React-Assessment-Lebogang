@@ -27,7 +27,7 @@ export default function Home() {
         </div>
 
         {/* right col —  hidden on mobile */}
-        <aside className="hidden md:block w-1/4">
+        <aside className="hidden md:block w-1/5">
           <div className="sticky top-3 flex flex-col gap-6">
             <SuggestedDevs />
           </div>
