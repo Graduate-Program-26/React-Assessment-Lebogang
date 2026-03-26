@@ -123,7 +123,7 @@ export default function ProfileHeader() {
                 <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => navigator.clipboard.writeText(`localhost:3000/profile/${user?.login}`)}
+                    onClick={() => navigator.clipboard.writeText(`https://gitstagram-git-dev-lebogangmasenyas-projects.vercel.app/profile/${user?.login}`)}
                 >
                     <Copy className="w-3.5 h-3.5" />
                 </Button>
