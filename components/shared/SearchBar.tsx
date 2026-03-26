@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 
 export default function SearchBar(values: {value: string, onChange: (value: string) => void, placeholder?: string}) {
     const [text, setText] = useState("");
-    const [query] = useDebounce(text, 500);
+    const [query] = useDebounce(text, 700);
     useEffect(() => {
        // This prevents searching for empty strings on mount
         if (query !== undefined) {

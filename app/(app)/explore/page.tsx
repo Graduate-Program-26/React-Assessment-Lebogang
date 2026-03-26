@@ -20,7 +20,7 @@ export default function Home() {
             <SearchBar
                 value={query}
                 onChange={setQuery}
-                placeholder="Search repos, devs, languages..."
+                placeholder="Search repos, devs..."
             />
 
             {isSearching && (

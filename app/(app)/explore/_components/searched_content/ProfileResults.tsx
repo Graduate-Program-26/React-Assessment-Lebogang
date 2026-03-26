@@ -9,7 +9,7 @@ export default function ProfileResults({query} : {query: string}) { // would be 
         const [profiles, setProfiles] = useState<GitHubUser[]>([]);
         
         useEffect(() => {
-            if (query.trim().length > 0) {
+            if (query.trim().length > 1) {
                 const loadData = async () => {
                     setLoading(true);
                     const data = await searchUsers(query, 12);
@@ -17,6 +17,10 @@ export default function ProfileResults({query} : {query: string}) { // would be 
                     setLoading(false);
                 };
                 loadData();
+            } else {
+                setProfiles([]);
+                setLoading(false);
+
             }
         }, [query]);
 

@@ -11,7 +11,7 @@ export default function RepoResults({ query }: { query: string }) { // would be 
     const [repos, setRepos] = useState<GitHubRepo[]>([]);
 
     useEffect(() => {
-        if (query.trim().length > 0) {
+        if (query.trim().length > 1) {
             const loadData = async () => {
                 setLoading(true);
                 const data = await searchRepos(query, { per_page: 12 });
@@ -19,6 +19,9 @@ export default function RepoResults({ query }: { query: string }) { // would be 
                 setLoading(false);
             };
             loadData();
+        } else {
+            setRepos([]);
+            setLoading(false);
         }
     }, [query]);
 
