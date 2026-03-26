@@ -18,7 +18,7 @@ export interface SuggestedDevProp {
 
 export default function SuggestedDev({ data }: { data: SuggestedDevProp }) {
   function handleViewProfile() {
-    window.open(`http://localhost:3000/profile/${data.username}`, "_blank");
+    window.open(`https://gitstagram-git-dev-lebogangmasenyas-projects.vercel.app/profile/${data.username}`, "_blank");
   }
 
   return (
