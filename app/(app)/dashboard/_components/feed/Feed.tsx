@@ -10,7 +10,6 @@ import { useMemo, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { ActivityFeedSkeleton } from "@/app/(app)/profile/_components/ProfileSkeletons";
 import { Spinner } from "@/components/ui/spinner"
-import { nanoid } from 'nanoid'
 
 
 export default function Feed() {
@@ -90,10 +89,10 @@ export default function Feed() {
             {combinedFeed.map((item) => {
                 if (item.feedType === 'repo') {
                     const repo = item as GitHubRepo;
-                    return <RepoCard key={repo.id + nanoid()} repo={repo} />
+                    return <RepoCard key={repo.id + crypto.randomUUID()} repo={repo} />
                 } else {
                     const event = item as FeedEvent;
-                    return <FeedItem key={event.id + nanoid()} data={event} />
+                    return <FeedItem key={event.id + crypto.randomUUID()} data={event} />
                 }
             })}
 
