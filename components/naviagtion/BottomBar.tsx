@@ -1,54 +1,24 @@
-"use client"
+"use server"
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { clsx } from "clsx";
-import { Home, Search, PlusSquare, Bell, User, Sun, Moon } from "lucide-react"; // Or your respective icons
-import { useTheme } from "next-themes"
-const links = [
-    { href: "/", label: "Home", icon: Home },
-    { href: "/explore", label: "Explore", icon: Search },
-    { href: "/profile", label: "Profile", icon: User },
-];
+import { auth } from "@/lib/auth"
 
-export default function BottomBar() {
-    const pathname = usePathname();
-    const { setTheme, resolvedTheme } = useTheme();
+import { redirect } from "next/navigation"
+import BottomBarClient from "./BottomBarClient";
 
-    const handleThemeToggle = () => setTheme(resolvedTheme === "dark" ? "light" : "dark");
+export default async function BottomBar() {
+  const session = await auth();
 
+        if (!session) redirect("/");
+    
+        const user = {
+            name: session.user?.name ?? "",
+            username: session.user?.username ?? "",
+            image: session.user?.image ?? "",
+            accessToken: session.accessToken,
+        }
+   
 
     return (
-        <div className="flex items-center justify-around h-full px-2 py-1 w-full bg-background border-t">
-            {links.map((link) => {
-                const Icon = link.icon;
-                return (
-                    <Link
-                        key={link.href}
-                        href={link.href}
-                        className={clsx(
-                            "flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg transition-colors text-[10px]",
-                            pathname === link.href
-                                ? "text-foreground font-medium"
-                                : "text-muted-foreground"
-                        )}
-                    >
-                        <Icon className="w-5 h-5" />
-                        <span>{link.label}</span>
-                    </Link>
-                );
-            }) }
-
-            <button
-                onClick={handleThemeToggle}
-                className="flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg transition-colors text-[10px] text-muted-foreground hover:text-foreground cursor-pointer"
-            >
-                <div className="relative w-5 h-5 flex items-center justify-center">
-                    <Sun className="w-5 h-5 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-                    <Moon className="absolute w-5 h-5 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-                </div>
-                <span>Theme</span>
-            </button>
-        </div>
-    );
+        <BottomBarClient user={user}/>
+    )
 }
