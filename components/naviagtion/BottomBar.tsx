@@ -1,36 +1,24 @@
-"use client" // needed for usePathname and Link
+"use server"
 
-import { usePathname } from "next/navigation"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Home, Search, Bell, Activity, Link, Icon } from "lucide-react";
-import { clsx } from "clsx";
+import { auth } from "@/lib/auth"
 
-const links = [
-    { href: "/", label: "Feed", icon: Home },
-    { href: "/explore", label: "Explore", icon: Search },
-    { href: "/profile", label: "Profile", icon: Home },
-]
+import { redirect } from "next/navigation"
+import BottomBarClient from "./BottomBarClient";
 
-export default function BottomBar() {
-    const pathname = usePathname();
+export default async function BottomBar() {
+  const session = await auth();
+
+        if (!session) redirect("/");
+    
+        const user = {
+            name: session.user?.name ?? "",
+            username: session.user?.username ?? "",
+            image: session.user?.image ?? "",
+            accessToken: session.accessToken,
+        }
+   
 
     return (
-        <div className="flex items-center justify-around px-2 py-2">
-            {links.map((link) => (
-                <Link
-                    key={link.href}
-                    href={link.href}
-                    className={clsx(
-                        "flex flex-col items-center gap-1 px-3 py-1 rounded-lg transition-colors",
-                        pathname === link.href
-                            ? "text-foreground"
-                            : "text-muted-foreground"
-                    )}
-                >
-                    <link.icon className="w-5 h-5" />
-                    {link.label}
-                </Link>
-            ))}
-        </div>
+        <BottomBarClient user={user}/>
     )
 }

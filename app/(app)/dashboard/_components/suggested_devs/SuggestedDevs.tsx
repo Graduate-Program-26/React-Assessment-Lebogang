@@ -34,14 +34,18 @@ export default function SuggestedDevs() {
     }
 
     return (
-        <div className="space-y-4">
-            <h2>Suggested Devs</h2>
-            <ItemGroup>
-                {suggestions.map((dev) => (
-                    <SuggestedDev key={dev.username} data={dev} />
-                ))}
-            </ItemGroup>
-
-        </div>
+      <div className="space-y-4 w-full">
+    <h2 className="text-lg font-semibold tracking-tight">Suggested Developers</h2>
+    
+    {/* Responsive Container: Horizontal on mobile, vertical stack on desktop */}
+    <div className="flex flex-row md:flex-col overflow-x-auto md:overflow-visible gap-4 pb-3 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 no-scrollbar">
+        {suggestions.map((dev) => (
+            // Add a fixed or constrained width for the items on mobile so they don't stretch
+            <div key={dev.username} className="w-[260px] md:w-full shrink-0">
+                <SuggestedDev data={dev} />
+            </div>
+        ))}
+    </div>
+</div>
     )
 }

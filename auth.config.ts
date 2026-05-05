@@ -2,11 +2,7 @@ import type { NextAuthConfig } from 'next-auth';
 import GitHub from "next-auth/providers/github";
 
 
-// @TODO: check auth matrix. for pages
-/*
-const protectedRoutes = ['/dashboard', '/profile']
-const publicRoutes = ['/login', '/logout', '/']
-*/
+
 
 export const authConfig = {
     pages: {

@@ -28,7 +28,7 @@ export default function RepoCard({ repo }: { repo: GitHubRepo }) {
         <Dialog>
             <DialogTrigger asChild>
                 <div
-                    className="relative h-48 cursor-pointer overflow-hidden bg-card border-border"
+                    className="relative h-48 cursor-pointer w-full max-w-full overflow-hidden bg-card border-border"
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
                 >

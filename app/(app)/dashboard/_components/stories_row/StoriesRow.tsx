@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/carousel"
 
 import { useEffect, useState } from "react";
-import { discoverUsers , discoverUsersEnriched} from "@/lib/actions/users.actions";
+import { discoverUsers, discoverUsersEnriched } from "@/lib/actions/users.actions";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { GitHubUser } from "@/utils/types/types";
@@ -51,8 +51,8 @@ export default function StoriesRow() {
     }
 
     return (
-        <Carousel opts={{ dragFree: true, align: "start" }} className="w-full">
-            <CarouselContent className="w-full">
+        <Carousel opts={{ dragFree: true, align: "start" }} className="w-full max-w-full overflow-hidden">
+            <CarouselContent className="-ml-3 w-full">
                 {storiesData.map((story) => (
                     <CarouselItem key={story.username} className="basis-auto pl-3">
                         <StoryItem data={story} />

@@ -8,7 +8,7 @@ import { useInfiniteQuery } from "@tanstack/react-query"
 import { useParams } from "next/navigation"
 import { ActivityFeedSkeleton } from "./ProfileSkeletons"
 import { Button } from "@/components/ui/button"
-
+import Image from "next/image"
 export default function ActivityFeed() {
     const { username } = useParams();
 
@@ -27,7 +27,7 @@ export default function ActivityFeed() {
             // If the last page was empty, there are no more pages
             return lastPage && lastPage.length > 0 ? allPages.length + 1 : undefined;
         },
-        
+
     });
 
 
@@ -39,17 +39,28 @@ export default function ActivityFeed() {
 
     if (events.length === 0) {
         return (
-            <p className="text-sm text-muted-foreground text-center py-12">
-                No recent activity
-            </p>
+            <div className="flex flex-col items-center justify-center py-12">
+                <div className="relative w-40 h-40 mb-4">
+                    <Image
+                        src="/svgs/void.svg"
+                        alt="No activity"
+                        loading="eager"
+                        fill
+                        className="text-muted-foreground"
+                    />
+                </div>
+                <p className="text-sm text-muted-foreground text-center">
+                    No recent activity
+                </p>
+            </div>
         )
     }
 
 
     return (
-        <div className="flex flex-col divide-y divide-border">
+        <div className="flex flex-col divide-y divide-border w-full max-w-[92vw]  mx-auto">            
             {events?.map((event) => (
-                <div key={event.id} className="px-4 py-3">
+                <div key={event.id} className="px-1 py-2 w-full">
                     {event.type === "PushEvent" || event.type === "PullRequestEvent"
                         ? <RepoCardEvent event={event} />
                         : <ActivityCard event={event} />

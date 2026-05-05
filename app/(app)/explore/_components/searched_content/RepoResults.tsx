@@ -5,6 +5,7 @@ import { ProfileFeedSkeleton } from "@/app/(app)/profile/_components/ProfileSkel
 
 import { useEffect, useState } from "react"
 import { GitHubRepo } from "@/utils/types/types";
+import Image from "next/image";
 
 export default function RepoResults({ query }: { query: string }) { // would be repo name and search
     const [loading, setLoading] = useState(true);

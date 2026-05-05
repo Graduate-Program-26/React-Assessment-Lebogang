@@ -92,8 +92,7 @@ export async function fetchLastSixCommits(username: string) {
             if (!response.ok) return [];
 
             const data = await response.json();
-
-            const formattedCommits: RepoCommits[] = data.map((c: RepoCommits) => ({
+            const formattedCommits: any[] = data.map((c: any) => ({
                 message: c.commit.message,
                 sha: c.sha,
                 repoName: repo.name,

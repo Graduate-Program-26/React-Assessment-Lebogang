@@ -43,7 +43,7 @@ export default function LandingClient() {
             </main>
 
             <footer className="py-6 text-center text-xs text-muted-foreground">
-                Not affiliated with GitHub but with DVT???
+                Not affiliated with GitHub. But uses the GitHub API. 
             </footer>
         </div>
     )
