@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { GitHubRepo } from "@/utils/types/types";
 import { Suspense } from "react";
 import { ProfileFeedSkeleton } from "./ProfileSkeletons";
-
+import Image from "next/image";
 export default function ProfileFeed() {
     const { username } = useParams();
     const [repos, setRepos] = useState<GitHubRepo[]>([]);
@@ -23,18 +23,28 @@ export default function ProfileFeed() {
         }
     }, [username]);
 
-    if(!repos) {
+    if (!repos) {
         return <ProfileFeedSkeleton />
     }
 
     if (repos.length === 0) {
         return (
-            <p className="text-sm text-muted-foreground text-center py-12">
-                No repositories found
-            </p>
+            <div className="flex flex-col items-center justify-center py-12">
+                <div className="relative w-12 h-12 mb-4">
+                    <Image
+                        src="/svgs/void.svg"
+                        alt="No activity"
+                        fill
+                        className="text-muted-foreground"
+                    />
+                </div>
+                <p className="text-sm text-muted-foreground text-center">
+                    No repos found
+                </p>
+            </div>
         )
     }
-    
+
     return (
         <Suspense fallback={<ProfileFeedSkeleton />}>
             <div className="grid grid-cols-3 gap-[1.5px] bg-border">

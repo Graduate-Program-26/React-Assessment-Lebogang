@@ -16,7 +16,7 @@ export default function Home() {
     const isSearching = query.trim().length > 0
 
     return (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 pt-2">
             <SearchBar
                 value={query}
                 onChange={setQuery}
