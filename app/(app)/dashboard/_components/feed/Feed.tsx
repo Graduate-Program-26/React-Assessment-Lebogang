@@ -75,22 +75,22 @@ export default function Feed() {
     if (status === "pending") {
         return (
             <div className="w-full space-y-4">
-               <h1 className="text-3xl font-bold">Trending Repositories & Recent Activity</h1>
+               <h1 className="text-3xl font-bold">Loading Trending Repositories & Recent Activity</h1>
                 <ActivityFeedSkeleton length={12} />
             </div>
         )
     }
 
     return (
-        <div className={cn("w-full", "space-y-4")}>
+        <div className={cn("w-full min-w-0", "space-y-4")}>
            <h1 className="text-3xl font-bold">Trending Repositories & Recent Activity</h1>
             {combinedFeed.map((item) => {
                 if (item.feedType === 'repo') {
                     const repo = item as GitHubRepo;
-                    return <RepoCard key={repo.id + crypto.randomUUID()} repo={repo} />
+                    return <RepoCard key={String(repo.id+repo.name)} repo={repo} />
                 } else {
                     const event = item as FeedEvent;
-                    return <FeedItem key={event.id + crypto.randomUUID()} data={event} />
+                    return <FeedItem key={String(event.id+event.repo.name+event.actor.login+event.created_at+event.type)} data={event} />
                 }
             })}
 

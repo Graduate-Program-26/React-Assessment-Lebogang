@@ -56,7 +56,7 @@ export default function ActivityCard({ event }: ActivityCardProps) {
 
     const { icon, color, label } = content;
     return (
-        <Card className="bg-card border-border">
+        <Card className="w-full max-w-full overflow-hidden bg-card border-border">
             <CardContent className="py-3 px-4 flex items-center gap-3">
                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${color}`}>
                     {icon}
