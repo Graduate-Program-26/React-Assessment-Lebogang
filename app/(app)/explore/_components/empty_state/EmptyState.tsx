@@ -17,6 +17,7 @@ export default function EmptyState({ hasQuery }: EmptyStateProps) {
                     <Image
                         src="/svgs/search.svg"
                         alt="Search"
+                        loading="eager"
                         width={280}
                         height={280}
                         className="text-muted-foreground"
@@ -32,7 +33,6 @@ export default function EmptyState({ hasQuery }: EmptyStateProps) {
                     </div>
                 ) : (
                     <div>
-                        <h2 className="text-base font-semibold">Search Dev-Gram</h2>
                         <p className="text-sm text-muted-foreground max-w-xs mt-1">
                             Find repos by name or discover developers to.
                         </p>
@@ -49,7 +49,8 @@ export default function EmptyState({ hasQuery }: EmptyStateProps) {
                             }>
                                 <GlobeDemo />
                             </Suspense>
-                        </GlobeErrorBoundary>                    </div>
+                        </GlobeErrorBoundary>                    
+                    </div>
                 )}
             </div>
 

@@ -34,6 +34,7 @@ export default function ProfileFeed() {
                     <Image
                         src="/svgs/void.svg"
                         alt="No activity"
+                        loading="eager"
                         fill
                         className="text-muted-foreground"
                     />
