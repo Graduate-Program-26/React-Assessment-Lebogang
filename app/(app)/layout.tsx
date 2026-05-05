@@ -27,7 +27,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
                 {/* Main content column */}
                 <div className="flex flex-1 flex-col">
-                    <main className="flex-1 pt-13 pb-20 md:pb-0">
+                    <main className="flex-1 pt-8 pb-20 md:pb-0">
                         {children}
                     </main>
                 </div>
