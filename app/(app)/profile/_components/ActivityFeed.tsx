@@ -40,7 +40,7 @@ export default function ActivityFeed() {
     if (events.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-12">
-                <div className="relative w-12 h-12 mb-4">
+                <div className="relative w-40 h-40 mb-4">
                     <Image
                         src="/svgs/void.svg"
                         alt="No activity"
