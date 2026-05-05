@@ -24,7 +24,7 @@ const GITHUB_LOADING_STATES = [
         message: 'Summoning the Octocat...',
     },
     {
-        icon: '/gifs/copilot.gif',
+        icon: '/gifs/octocat.gif',
         message: 'Asking Copilot to write some magic...',
     },
     {
@@ -35,7 +35,7 @@ const GITHUB_LOADING_STATES = [
 
 const storyGraphics = [
     '/gifs/copilot.gif',
-    '/gifs/copilot.gif',
+    '/gifs/octocat.gif',
     '/gifs/duck.gif',
     '/svgs/boxertocat.jpg',
    '/svgs/codercat.jpg',

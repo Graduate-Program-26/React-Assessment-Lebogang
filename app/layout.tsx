@@ -15,8 +15,8 @@ export default async function RootLayout({ children, }: Readonly<{ children: Rea
       <body className={`bg-background text-foreground ${fjalla.className}`}>
 
         <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
+          attribute="class"     
+          defaultTheme="light"
           enableSystem={true}
           disableTransitionOnChange
         >

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { clsx } from "clsx";
-import { Home, Search, PlusSquare, Bell, User, Sun, Moon } from "lucide-react"; // Or your respective icons
+import { Home, Search,  User, Sun, Moon } from "lucide-react"; 
 import { useTheme } from "next-themes"
 
 const BASE_LINKS = [
