@@ -58,7 +58,6 @@ export function StoriesPopup({ userData }: { userData: StoryItemProp }) {
         return GITHUB_LOADING_STATES[randomIndex];
     });
 
-    const randomGraphic = storyGraphics[Math.floor(Math.random() * storyGraphics.length)];
 
     const { data: stories, isLoading } = useQuery({
         queryKey: ['user-commits', userData.username],
@@ -81,7 +80,7 @@ export function StoriesPopup({ userData }: { userData: StoryItemProp }) {
                         {/* Commit Message Container - Takes remaining space */}
                         <div className="flex-1 flex flex-col justify-start overflow-y-auto">
                             <span className="text-blue-400 font-mono text-xs tracking-tighter block mb-2">
-                                📁 {story.repoName || 'Repository'}
+                                 {story.repoName || 'Repository'}
                             </span>
                             
                             <h2 className="text-xl md:text-2xl font-bold leading-tight tracking-tight line-clamp-6 whitespace-pre-wrap">
@@ -172,6 +171,16 @@ export function StoriesPopup({ userData }: { userData: StoryItemProp }) {
                         ) : (
                             <div className="flex flex-col items-center gap-2 text-zinc-500">
                                 <Spinner />
+                                <div className="w-20 h-20 relative opacity-80">
+                                <Image
+                                    src='/gifs/copilot.gif'
+                                    alt="Story illustration"
+                                    fill
+                                    loading="eager"
+                                    sizes="80px"
+                                    className="object-contain invert dark:invert-0"
+                                />
+                            </div>
                                 <p className="text-xs font-mono">Fetching commits...</p>
                             </div>
                         )}
